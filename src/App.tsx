@@ -8,7 +8,7 @@ import type { ViewId } from "./components/layout/Sidebar";
 import { PracticeView } from "./components/practice/PracticeView";
 import { RoleplayView } from "./components/roleplay/RoleplayView";
 import { ScriptDashboard } from "./components/script/ScriptDashboard";
-import { FixedSurveyGuide } from "./components/survey/FixedSurveyGuide";
+import { BackgroundSurveySheet } from "./components/survey/BackgroundSurveySheet";
 import { Toast } from "./components/ui/Toast";
 import type { LlmSettings, ToastMessage } from "./types";
 
@@ -53,7 +53,7 @@ export default function App() {
   const saveSettings = () => { window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); showToast("AI 설정을 브라우저에 저장했습니다.", "공유 PC에서는 사용 후 설정을 지워 주세요.", "success"); };
   const screen = (() => {
     if (activeView === "home") return <HomeView onNavigate={setActiveView} />;
-    if (activeView === "survey") return <FixedSurveyGuide />;
+    if (activeView === "survey") return <BackgroundSurveySheet />;
     if (activeView === "difficulty") return <DifficultyGuide />;
     if (activeView === "roleplay") return <RoleplayView onToast={showToast} settings={settings} />;
     if (activeView === "practice") return <PracticeView onToast={showToast} settings={settings} />;
