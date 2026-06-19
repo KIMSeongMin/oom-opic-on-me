@@ -179,8 +179,8 @@ export function BackgroundSurveySheet() {
       ) : null}
 
       <Card className="overflow-hidden bg-white dark:bg-zinc-950">
-        <div className="border-b border-sky-200 bg-sky-100 px-5 py-3 text-center dark:border-sky-900 dark:bg-sky-950">
-          <p className="text-lg font-bold text-zinc-950 dark:text-white">[Background Survey]</p>
+        <div className="flex flex-col gap-1 border-b border-zinc-200 bg-zinc-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between [&>p:first-child]:!text-sm [&>p:last-child]:!text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:[&>p:last-child]:!text-zinc-400">
+          <p className="text-lg font-bold text-zinc-950 dark:text-white">Background Survey</p>
           <p className="mt-0.5 text-xs text-sky-800 dark:text-sky-200">{mode === "guide" ? "OOM 추천 답안이 체크되어 있습니다." : "연습 모드: 직접 고른 뒤 채점하세요."}</p>
         </div>
         <div className="p-5 sm:p-7">

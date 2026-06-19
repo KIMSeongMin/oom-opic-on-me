@@ -45,6 +45,17 @@ npm run preview
 
 Vite의 `base`는 `./`로 설정되어 있어 GitHub Pages 저장소 경로와 사내 정적 경로 모두에서 에셋 경로가 깨지지 않습니다.
 
+## 코드 에이전트 문서
+
+새로운 코드 에이전트는 작업 전 [AGENTS.md](AGENTS.md)를 먼저 읽습니다. 아키텍처와 화면 라우팅은 `docs/ARCHITECTURE.md`, `docs/ROUTING.md`에 정리되어 있으며, 현재 파일과 npm script 목록은 아래 명령으로 갱신합니다.
+
+```bash
+npm run docs:generate
+npm run docs:check
+```
+
+Claude Code는 `CLAUDE.md`, Roo Code는 `.roo/rules/oom-project.md`를 통해 같은 작업 규칙으로 연결됩니다.
+
 ## 내부 LLM 설정
 
 앱의 **AI 피드백 / 설정** 화면에서 아래 값을 입력하고 저장합니다.
