@@ -38,6 +38,7 @@
 npm run lint
 npm run test
 npm run build
+npm run verify:pages
 ```
 
 문서 구조나 npm script를 바꿨다면 아래도 실행하고 결과를 확인합니다.

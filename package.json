@@ -11,7 +11,8 @@
     "test": "vitest run --config vitest.config.ts",
     "deploy": "npm run build",
     "docs:generate": "node scripts/generate-docs.mjs",
-    "docs:check": "node scripts/generate-docs.mjs --check"
+    "docs:check": "node scripts/generate-docs.mjs --check",
+    "verify:pages": "node scripts/verify-pages-artifact.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",
