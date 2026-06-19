@@ -1,0 +1,55 @@
+import { BookOpenText, MessageCircleQuestion, Route } from "lucide-react";
+import { useState } from "react";
+import type { LlmSettings, ScriptItem } from "../../types";
+import { Card } from "../ui/Card";
+import { ScriptDetail } from "./ScriptDetail";
+import { ScriptAnswerBlueprint, ScriptQuestionVariants } from "./ScriptVariants";
+
+type TrainingTab = "story" | "variants" | "blueprint";
+
+type ScriptTrainingTabsProps = {
+  script: ScriptItem;
+  settings: LlmSettings;
+  onToast: (title: string, description?: string, tone?: "success" | "error" | "info") => void;
+};
+
+const tabs: Array<{ id: TrainingTab; label: string; icon: typeof BookOpenText }> = [
+  { id: "story", label: "메인 스토리", icon: BookOpenText },
+  { id: "variants", label: "질문별 변형", icon: MessageCircleQuestion },
+  { id: "blueprint", label: "답변 설계", icon: Route },
+];
+
+export function ScriptTrainingTabs({ script, settings, onToast }: ScriptTrainingTabsProps) {
+  const [activeTab, setActiveTab] = useState<TrainingTab>("story");
+
+  return (
+    <div className="space-y-5">
+      <Card className="p-1.5">
+        <div aria-label="스크립트 학습 보기" className="grid grid-cols-3 gap-1" role="tablist">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            const active = activeTab === tab.id;
+            return (
+              <button
+                aria-label={tab.label}
+                aria-selected={active}
+                className={`flex min-h-10 items-center justify-center gap-2 rounded-md px-2 py-2 text-xs font-semibold transition-colors sm:text-sm ${active ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"}`}
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                role="tab"
+                type="button"
+              >
+                <Icon className="h-4 w-4" />
+                <span className="hidden sm:inline">{tab.label}</span><span className="sm:hidden">{tab.id === "story" ? "스토리" : tab.id === "variants" ? "변형" : "설계"}</span>
+              </button>
+            );
+          })}
+        </div>
+      </Card>
+
+      {activeTab === "story" ? <ScriptDetail onToast={onToast} script={script} settings={settings} /> : null}
+      {activeTab === "variants" ? <ScriptQuestionVariants script={script} /> : null}
+      {activeTab === "blueprint" ? <ScriptAnswerBlueprint script={script} /> : null}
+    </div>
+  );
+}

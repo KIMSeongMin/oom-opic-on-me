@@ -30,6 +30,12 @@
 - 브라우저 API: `src/lib/speech.ts`, `src/lib/recorder.ts`
 - LLM 어댑터: `src/lib/llm.ts`
 
+## Script Variants
+
+- `src/data/scriptVariants.ts` owns the 30-45 second question-type examples and the four-step answer blueprints.
+- Keep the 60-90 second `scripts.ts` story as the primary reusable scene. Variants should change only the question entry point, not create unrelated stories.
+- `ScriptTrainingTabs` owns the `story`, `variants`, and `blueprint` views. Preserve this separation when adding a new script group.
+
 ## Required Validation
 
 코드 또는 스타일을 바꾼 뒤 아래를 실행합니다.

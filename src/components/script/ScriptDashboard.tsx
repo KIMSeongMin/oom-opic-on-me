@@ -4,7 +4,7 @@ import { scripts } from "../../data/scripts";
 import type { LlmSettings } from "../../types";
 import { Badge } from "../ui/Badge";
 import { Card } from "../ui/Card";
-import { ScriptDetail } from "./ScriptDetail";
+import { ScriptTrainingTabs } from "./ScriptTrainingTabs";
 
 type ScriptDashboardProps = {
   initialScriptId: string;
@@ -32,7 +32,7 @@ export function ScriptDashboard({ initialScriptId, settings, onToast, onScriptCh
         })}
       </div>
 
-      <ScriptDetail key={selected.id} onToast={onToast} script={selected} settings={settings} />
+      <ScriptTrainingTabs key={selected.id} onToast={onToast} script={selected} settings={settings} />
       <Card className="border-amber-200 bg-amber-50 p-4 dark:border-amber-900 dark:bg-amber-950"><p className="text-sm font-semibold text-amber-900 dark:text-amber-100">Tip Card</p><p className="mt-1 text-sm leading-6 text-amber-800 dark:text-amber-200">외운 문장을 처음부터 끝까지 재현하려 하지 마세요. 첫 장면, 활동 두 개, 느낀 점 하나만 기억해도 훨씬 자연스럽게 이어집니다.</p></Card>
     </div>
   );

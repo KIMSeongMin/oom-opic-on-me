@@ -16,6 +16,30 @@ export type ScriptItem = {
   pointNotes: string[];
 };
 
+export type ScriptVariant = {
+  id: string;
+  label: string;
+  questionType: string;
+  question: string;
+  pivot: string;
+  keep: string[];
+  englishExample: string;
+};
+
+export type ScriptBlueprintStep = {
+  id: string;
+  label: string;
+  koreanGuide: string;
+  cue: string;
+};
+
+export type ScriptVariantSet = {
+  title: string;
+  description: string;
+  variants: ScriptVariant[];
+  blueprint: ScriptBlueprintStep[];
+};
+
 export type SurveyItem = {
   id: string;
   name: string;
