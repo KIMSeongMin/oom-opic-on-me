@@ -2,7 +2,7 @@
 
 ## Current Additions
 
-`exam-guide` renders `ExamGuideView` and is reachable from the sidebar as **OPIc 수험 가이드**. It is an information view, not a training step; its primary call to action routes learners to `survey`.
+`exam-overview`, `exam-apply`, `exam-day`, and `exam-results` render `ExamGuideDashboard`. The sidebar places the **OPIc 수험 가이드** parent directly below Home, with four nested navigation entries. It is an information area, not a training step; its primary call to action routes learners to `survey`.
 
 STEP 3 uses a three-block contract: `opening`, `details`, and `closing`. The question-variation tab should show which of those blocks are replaced or retained, while the answer-blueprint tab explains the same conversion rule with a selected expected question.
 

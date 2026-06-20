@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AiSettingsView } from "./components/ai/AiSettingsView";
 import { DifficultyGuide } from "./components/difficulty/DifficultyGuide";
-import { ExamGuideView } from "./components/guide/ExamGuideView";
+import { ExamGuideDashboard } from "./components/guide/ExamGuideDashboard";
 import { HomeView } from "./components/home/HomeView";
 import { AppShell } from "./components/layout/AppShell";
 import type { ViewId } from "./components/layout/Sidebar";
@@ -54,7 +54,7 @@ export default function App() {
   const saveSettings = () => { window.localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); showToast("AI 설정을 브라우저에 저장했습니다.", "공유 PC에서는 사용 후 설정을 지워 주세요.", "success"); };
   const screen = (() => {
     if (activeView === "home") return <HomeView onNavigate={setActiveView} />;
-    if (activeView === "exam-guide") return <ExamGuideView onNavigate={setActiveView} />;
+    if (activeView === "exam-overview" || activeView === "exam-apply" || activeView === "exam-day" || activeView === "exam-results") return <ExamGuideDashboard initialSection={activeView} onNavigate={setActiveView} onSectionChange={setActiveView} />;
     if (activeView === "survey") return <BackgroundSurveySheet />;
     if (activeView === "difficulty") return <DifficultyGuide />;
     if (activeView === "roleplay") return <RoleplayView onToast={showToast} settings={settings} />;

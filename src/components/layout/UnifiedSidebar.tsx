@@ -31,6 +31,13 @@ const primaryItems: NavigationItem[] = [
   { id: "difficulty", label: "STEP 2. 난이도 설정", icon: SlidersHorizontal },
 ];
 
+const examItems: Array<{ id: ViewId; label: string }> = [
+  { id: "exam-overview", label: "소개 · 등급" },
+  { id: "exam-apply", label: "회원 · 신청 · 응시료" },
+  { id: "exam-day", label: "신분증 · 입실 · 진행" },
+  { id: "exam-results", label: "성적 · 인증서 · 쿠폰" },
+];
+
 const scriptItems: Array<{ id: ViewId; label: string }> = [
   { id: "script-outdoor", label: "야외 / 여행" },
   { id: "script-indoor", label: "실내 / 휴식" },
@@ -71,6 +78,7 @@ export function UnifiedSidebar({ activeView, mobileOpen = false, onClose, onNavi
     onClose?.();
   };
   const scriptActive = scriptItems.some((item) => item.id === activeView);
+  const examActive = examItems.some((item) => item.id === activeView);
 
   const content = (
     <div className="flex h-full flex-col bg-zinc-50 px-3 py-5 dark:bg-zinc-950">
@@ -86,11 +94,18 @@ export function UnifiedSidebar({ activeView, mobileOpen = false, onClose, onNavi
       </div>
 
       <nav aria-label="OOM 메뉴" className="space-y-1">
-        {primaryItems.map((item) => {
+        {primaryItems.slice(0, 1).map((item) => {
           const Icon = item.icon;
           return <NavigationButton active={activeView === item.id} key={item.id} onClick={() => navigate(item.id)}><Icon className="h-4 w-4" />{item.label}</NavigationButton>;
         })}
-        <NavigationButton active={activeView === "exam-guide"} onClick={() => navigate("exam-guide")}><BookOpenCheck className="h-4 w-4" />OPIc 수험 가이드</NavigationButton>
+        <NavigationButton active={examActive} onClick={() => navigate("exam-overview")}><BookOpenCheck className="h-4 w-4" />OPIc 수험 가이드</NavigationButton>
+        <div className="mt-1 space-y-1 border-l border-zinc-200 dark:border-zinc-800">
+          {examItems.map((item) => <NavigationButton active={activeView === item.id} key={item.id} nested onClick={() => navigate(item.id)}><ChevronRight className="h-3.5 w-3.5" />{item.label}</NavigationButton>)}
+        </div>
+        {primaryItems.slice(1).map((item) => {
+          const Icon = item.icon;
+          return <NavigationButton active={activeView === item.id} key={item.id} onClick={() => navigate(item.id)}><Icon className="h-4 w-4" />{item.label}</NavigationButton>;
+        })}
 
         <NavigationButton active={scriptActive} onClick={() => navigate("script-outdoor")}><ClipboardList className="h-4 w-4" />STEP 3. 만능 스크립트</NavigationButton>
         <div className="mt-1 space-y-1 border-l border-zinc-200 dark:border-zinc-800">

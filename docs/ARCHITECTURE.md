@@ -2,8 +2,8 @@
 
 ## Current Additions
 
-- `ExamGuideView` is the OPIc information hub: grade bands, application flow, test flow, official URLs, candidate checks, and preparation tips.
-- `src/data/examGuide.ts` owns external official links and the guide content. Time-sensitive information such as fees, schedules, deadlines, ID requirements, and score-release dates must link users to the official website instead of being hardcoded as current facts.
+- `ExamGuideDashboard` is a four-page OPIc information hub: overview/grades, membership/application/fees, ID/admission/test flow, and results/certificates/coupons.
+- `src/data/examGuideContent.ts` owns the structured candidate guide and cited effective-date notice. Time-sensitive rules must show a source note and link users to the official website.
 - `scripts.ts` remains the primary 60-90 second story. `scriptTrainingData.ts` owns four expected questions per group, and `scriptReplacementGuides.ts` owns the opening/details/closing blocks that change for a selected question.
 
 ## Runtime Model

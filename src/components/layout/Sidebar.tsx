@@ -14,7 +14,10 @@ import { cn } from "../../lib/utils";
 
 export type ViewId =
   | "home"
-  | "exam-guide"
+  | "exam-overview"
+  | "exam-apply"
+  | "exam-day"
+  | "exam-results"
   | "survey"
   | "difficulty"
   | "script-outdoor"
@@ -34,7 +37,10 @@ type SidebarProps = {
 
 export const viewTitles: Record<ViewId, string> = {
   home: "홈 / 전략 개요",
-  "exam-guide": "OPIc 수험 가이드",
+  "exam-overview": "OPIc 수험 가이드 · 소개 · 등급",
+  "exam-apply": "OPIc 수험 가이드 · 신청 · 응시료",
+  "exam-day": "OPIc 수험 가이드 · 당일 진행",
+  "exam-results": "OPIc 수험 가이드 · 성적 · 인증서",
   survey: "STEP 1. 서베이 고정 가이드",
   difficulty: "STEP 2. 난이도 설정",
   "script-outdoor": "STEP 3. 야외 / 여행",
