@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { LlmSettings, ScriptItem } from "../../types";
 import { Card } from "../ui/Card";
 import { ScriptDetail } from "./ScriptDetail";
-import { ScriptAnswerBlueprint, ScriptQuestionVariants } from "./ScriptVariants";
+import { ScriptAnswerBlueprint, ScriptQuestionVariants } from "./ScriptTrainingGuide";
 
 type TrainingTab = "story" | "variants" | "blueprint";
 

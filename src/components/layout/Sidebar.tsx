@@ -14,6 +14,7 @@ import { cn } from "../../lib/utils";
 
 export type ViewId =
   | "home"
+  | "exam-guide"
   | "survey"
   | "difficulty"
   | "script-outdoor"
@@ -33,6 +34,7 @@ type SidebarProps = {
 
 export const viewTitles: Record<ViewId, string> = {
   home: "홈 / 전략 개요",
+  "exam-guide": "OPIc 수험 가이드",
   survey: "STEP 1. 서베이 고정 가이드",
   difficulty: "STEP 2. 난이도 설정",
   "script-outdoor": "STEP 3. 야외 / 여행",

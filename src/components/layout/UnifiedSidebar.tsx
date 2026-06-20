@@ -1,5 +1,6 @@
 import {
   Bot,
+  BookOpenCheck,
   ChartNoAxesCombined,
   ChevronRight,
   ClipboardList,
@@ -89,6 +90,7 @@ export function UnifiedSidebar({ activeView, mobileOpen = false, onClose, onNavi
           const Icon = item.icon;
           return <NavigationButton active={activeView === item.id} key={item.id} onClick={() => navigate(item.id)}><Icon className="h-4 w-4" />{item.label}</NavigationButton>;
         })}
+        <NavigationButton active={activeView === "exam-guide"} onClick={() => navigate("exam-guide")}><BookOpenCheck className="h-4 w-4" />OPIc 수험 가이드</NavigationButton>
 
         <NavigationButton active={scriptActive} onClick={() => navigate("script-outdoor")}><ClipboardList className="h-4 w-4" />STEP 3. 만능 스크립트</NavigationButton>
         <div className="mt-1 space-y-1 border-l border-zinc-200 dark:border-zinc-800">

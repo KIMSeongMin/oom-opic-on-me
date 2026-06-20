@@ -23,7 +23,21 @@ export type ScriptVariant = {
   question: string;
   pivot: string;
   keep: string[];
-  englishExample: string;
+  englishExample?: string;
+};
+
+export type ScriptBlockId = "opening" | "details" | "closing";
+
+export type ScriptReplacement = {
+  block: ScriptBlockId;
+  instruction: string;
+  replacement: string;
+};
+
+export type ScriptReplacementGuide = {
+  summary: string;
+  replacements: ScriptReplacement[];
+  keepBlocks: ScriptBlockId[];
 };
 
 export type ScriptBlueprintStep = {

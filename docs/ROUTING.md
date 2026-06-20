@@ -1,5 +1,11 @@
 # View Routing
 
+## Current Additions
+
+`exam-guide` renders `ExamGuideView` and is reachable from the sidebar as **OPIc 수험 가이드**. It is an information view, not a training step; its primary call to action routes learners to `survey`.
+
+STEP 3 uses a three-block contract: `opening`, `details`, and `closing`. The question-variation tab should show which of those blocks are replaced or retained, while the answer-blueprint tab explains the same conversion rule with a selected expected question.
+
 OOM은 React Router 대신 `src/App.tsx`의 `activeView` state를 사용합니다. URL을 추가하거나 외부 라우터를 도입하기 전에 이 선택이 GitHub Pages의 단순 정적 배포와 현재 탭 기반 UX에 맞는지 검토합니다.
 
 | ViewId | 사이드바 | 화면 컴포넌트 | 다음 단계 |

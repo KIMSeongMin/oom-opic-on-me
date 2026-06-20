@@ -1,5 +1,11 @@
 # Architecture
 
+## Current Additions
+
+- `ExamGuideView` is the OPIc information hub: grade bands, application flow, test flow, official URLs, candidate checks, and preparation tips.
+- `src/data/examGuide.ts` owns external official links and the guide content. Time-sensitive information such as fees, schedules, deadlines, ID requirements, and score-release dates must link users to the official website instead of being hardcoded as current facts.
+- `scripts.ts` remains the primary 60-90 second story. `scriptTrainingData.ts` owns four expected questions per group, and `scriptReplacementGuides.ts` owns the opening/details/closing blocks that change for a selected question.
+
 ## Runtime Model
 
 OOM은 Vite로 빌드되는 React 단일 페이지 정적 앱입니다. 서버 라우트와 데이터베이스가 없으며, GitHub Pages 또는 임의의 정적 서버의 `dist/` 폴더에서 실행됩니다.
