@@ -38,7 +38,7 @@ npm run preview
 
 ## GitHub Pages 배포
 
-1. GitHub에서 빈 저장소 `KIMSeongMin/oom-opic-on-me`를 만듭니다.
+1. GitHub 저장소 `natekeem/oom`를 사용합니다.
 2. 이 프로젝트를 `main` 브랜치에 push합니다.
 3. 저장소의 **Settings → Pages**에서 Source를 **GitHub Actions**로 선택합니다.
 4. `.github/workflows/pages.yml` workflow가 테스트·빌드 후 Pages에 자동 배포합니다.
@@ -46,6 +46,8 @@ npm run preview
 처음 배포에서 `Failed to create deployment (404)`가 나오면 Pages가 아직 비활성화된 상태입니다. 위의 Source 설정을 저장한 뒤, Actions의 **Re-run jobs**를 누르거나 `main`에 새 커밋을 push하면 배포가 시작됩니다.
 
 Vite의 `base`는 `./`로 설정되어 있어 GitHub Pages 저장소 경로와 사내 정적 경로 모두에서 에셋 경로가 깨지지 않습니다.
+
+현재 GitHub Pages 주소는 `https://natekeem.github.io/oom/`입니다.
 
 배포 URL에서 `GET /src/main.tsx 404`가 보이면 Pages가 `Deploy from a branch`로 설정된 것입니다. **Settings → Pages → Source → GitHub Actions**로 변경해야 Actions가 만든 `dist/` artifact가 서비스됩니다.
 
