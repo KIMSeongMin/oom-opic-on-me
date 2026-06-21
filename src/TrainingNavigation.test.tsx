@@ -1,11 +1,16 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
 describe("training navigation", () => {
   it("shows progress only for training and keeps formula scenarios behind cards", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(
+      <MemoryRouter>
+        <App />
+      </MemoryRouter>
+    );
 
     expect(screen.queryByText("훈련 진행 0%")).not.toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "OPIc 실전 훈련하기" }));

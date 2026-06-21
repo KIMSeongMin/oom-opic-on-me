@@ -21,7 +21,8 @@ export type ViewId =
   | "roleplay-sports"
   | "roleplay-home"
   | "practice"
-  | "ai-settings";
+  | "ai-settings"
+  | "magazine-list";
 
 export const viewTitles: Record<ViewId, string> = {
   home: "홈 / 전략 개요",
@@ -47,4 +48,5 @@ export const viewTitles: Record<ViewId, string> = {
   "roleplay-home": "STEP 4. 집 / 거주지",
   practice: "STEP 5. 실전 연습",
   "ai-settings": "AI 피드백 / 설정",
+  "magazine-list": "오픽 매거진",
 };

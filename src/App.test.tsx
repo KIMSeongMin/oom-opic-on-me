@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
 describe("OOM", () => {
   it.skip("renders the dashboard and navigates to the survey guide", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<MemoryRouter><App /></MemoryRouter>);
     expect(screen.getByText("OOM")).toBeInTheDocument();
     expect(screen.getByText(/오픽은 나에게 맡기고/)).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: /STEP 1. 서베이 고정/ }));
@@ -14,7 +15,7 @@ describe("OOM", () => {
 
   it("keeps the sidebar in sync when a script group changes in the body", async () => {
     const user = userEvent.setup();
-    render(<App />);
+    render(<MemoryRouter><App /></MemoryRouter>);
 
     await user.click(screen.getByRole("button", { name: "스크립트 보기" }));
     const indoorTitle = await screen.findByText("조용한 카페와 집에서의 휴식 루틴");
