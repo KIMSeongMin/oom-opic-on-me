@@ -1,42 +1,100 @@
 # View Routing
 
-## Current Additions
+## Routing Model
 
-`training-hub` is the parent route for STEP 1 through STEP 5. The sidebar nests those steps under **OPIc 실전 훈련하기** and nests the STEP 3/4 group selectors one level deeper. Only `training-hub` and its descendants render the sticky training progress header.
+OOM does not use React Router. `src/App.tsx` stores the active `ViewId` in React state and selects one screen component. This is intentional for GitHub Pages and static hosting.
 
-`roleplay-formula` renders `RoleplayFormulaView`, which links to scenario groups instead of rendering every detailed scenario in the formula page.
+`ViewId` and the page-title map are defined in `src/components/layout/Sidebar.tsx`. When adding a view, update all of the following together:
 
-`exam-guide`, `script-hub`, and `roleplay-hub` are parent hub routes. Their sidebar menus stay collapsed by default and expand for the active family. Child routes open the related information or training page.
+1. `ViewId`
+2. `viewTitles`
+3. the `screen` selection in `App.tsx`
+4. the sidebar hierarchy in `ExpandableSidebar.tsx`
+5. this document
+6. route smoke tests when user-visible navigation changes
 
-STEP 3 routes now use `ScriptDashboardV2`; each survey group offers two story sets and the learner chooses one. STEP 4 routes now use `RoleplayViewV2`, including separate travel, indoor/rest, sports, and home scenario pages.
+## Sidebar Hierarchy
 
-`exam-overview` renders `ExamGuideOverview`, `exam-day` renders `ExamGuideDay`, and `exam-apply`/`exam-results` render `ExamGuideDashboard`. The candidate guide is an information area, not a training step.
+```text
+Home / strategy overview
+OPIc candidate guide
+├─ overview and grades
+├─ membership, application, and fees
+├─ identification, admission, and exam flow
+└─ results, certificate, and coupon
+OPIc training hub
+├─ STEP 1. fixed survey
+├─ STEP 2. difficulty
+├─ STEP 3. reusable scripts
+│  ├─ outdoor / travel
+│  ├─ indoor / rest
+│  ├─ sports / hobby
+│  └─ home / residence
+├─ STEP 4. role-play formula
+│  ├─ formula and question structure
+│  ├─ outdoor / travel
+│  ├─ indoor / rest
+│  ├─ sports / hobby
+│  └─ home / residence
+└─ STEP 5. practice
+AI feedback / settings
+```
 
-STEP 3 uses a three-block contract: `opening`, `details`, and `closing`. The question-variation tab should show which of those blocks are replaced or retained, while the answer-blueprint tab explains the same conversion rule with a selected expected question.
+The candidate guide and training hub are independent top-level branches. STEP 1-5 must not be displayed as peers of the guide; they belong to the training hub.
 
-OOM은 React Router 대신 `src/App.tsx`의 `activeView` state를 사용합니다. URL을 추가하거나 외부 라우터를 도입하기 전에 이 선택이 GitHub Pages의 단순 정적 배포와 현재 탭 기반 UX에 맞는지 검토합니다.
+## Header Rule
 
-| ViewId | 사이드바 | 화면 컴포넌트 | 다음 단계 |
-| --- | --- | --- | --- |
-| `home` | 홈 / 전략 개요 | `HomeView` | `survey` |
-| `survey` | STEP 1. 서베이 고정 | `BackgroundSurveySheet` | `difficulty` |
-| `difficulty` | STEP 2. 난이도 설정 | `DifficultyGuide` | `script-outdoor` |
-| `script-outdoor` | STEP 3 / 야외·여행 | `ScriptDashboard` | `roleplay` |
-| `script-indoor` | STEP 3 / 실내·휴식 | `ScriptDashboard` | `roleplay` |
-| `script-sports` | STEP 3 / 운동·취미 | `ScriptDashboard` | `roleplay` |
-| `script-home` | STEP 3 / 집·거주지 | `ScriptDashboard` | `roleplay` |
-| `roleplay` | STEP 4. 롤플레이 공식 | `RoleplayView` | `practice` |
-| `practice` | STEP 5. 실전 연습 | `PracticeView` | `ai-settings` |
-| `ai-settings` | AI 피드백 / 설정 | `AiSettingsView` | 없음 |
+`AppShell` renders the sticky title/progress header only for the following route family:
 
-## Script Detail Tabs
+- `training-hub`
+- `survey`, `difficulty`
+- `script-hub` and `script-*`
+- `roleplay`, `roleplay-hub`, `roleplay-formula`, and `roleplay-*`
+- `practice`
 
-Each STEP 3 group is displayed through `ScriptTrainingTabs`.
+Home, all `exam-*` views, and `ai-settings` do not render the sticky training header. Their mobile experience uses compact floating controls instead.
 
-- `메인 스토리`: 60-90 second reusable script, TTS, and memory modes
-- `질문별 변형`: three 30-45 second examples grouped by question type
-- `답변 설계`: four reusable assembly steps for the same scene
+## Route Table
 
-## Synchronization Rule
+| ViewId | Sidebar location | Screen owner | Header | Notes |
+| --- | --- | --- | --- | --- |
+| `home` | Home | `HomeView` | No | Strategy overview |
+| `exam-guide` | Candidate guide parent | `ExamGuideHub` | No | Explains the guide sections |
+| `exam-overview` | Candidate guide child | `ExamGuideOverview` | No | OPIc format and grade framework |
+| `exam-apply` | Candidate guide child | `ExamGuideDashboard` | No | Membership, application, fees |
+| `exam-day` | Candidate guide child | `ExamGuideDay` | No | ID, admission cutoff, OT/test visual flow |
+| `exam-results` | Candidate guide child | `ExamGuideDashboard` | No | Results, certificate, coupons |
+| `training-hub` | Training parent | `TrainingHub` | Yes, 0% | Explains STEP 1-5 |
+| `survey` | Training / STEP 1 | `BackgroundSurveySheet` | Yes, 20% | Fixed recommendation and rehearsal |
+| `difficulty` | Training / STEP 2 | `DifficultyGuide` | Yes, 40% | Default 5-5 guidance |
+| `script-hub` | Training / STEP 3 | `ScriptHub` | Yes, 60% | Explains story-set selection |
+| `script-outdoor` | Training / STEP 3 child | `ScriptDashboardV2` | Yes, 60% | Outdoor/travel group |
+| `script-indoor` | Training / STEP 3 child | `ScriptDashboardV2` | Yes, 60% | Indoor/rest group |
+| `script-sports` | Training / STEP 3 child | `ScriptDashboardV2` | Yes, 60% | Sports/hobby group |
+| `script-home` | Training / STEP 3 child | `ScriptDashboardV2` | Yes, 60% | Home/residence group |
+| `roleplay-hub` | Training / STEP 4 | `RoleplayHub` | Yes, 80% | Explains formula and scenario families |
+| `roleplay-formula` | Training / STEP 4 child | `RoleplayFormulaView` | Yes, 80% | Formula and scenario cards only |
+| `roleplay-travel` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Travel service scenarios |
+| `roleplay-indoor` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Cafe/rest service scenarios |
+| `roleplay-sports` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Court and class scenarios |
+| `roleplay-home` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Moving, cleaning, repair scenarios |
+| `practice` | Training / STEP 5 | `PracticeView` | Yes, 100% | Random prompt, timer, recording, feedback |
+| `ai-settings` | Top-level utility | `AiSettingsView` | No | LLM runtime configuration |
+| `roleplay` | Compatibility route only | `RoleplayFormulaView` | Yes, 80% | Do not add new navigation links to this alias |
 
-`ScriptDashboard` 내부에서 그룹을 변경하면 `onScriptChange`를 통해 `App.tsx`의 `activeView`도 바꿉니다. 이 규칙을 유지해야 본문 선택, 상단 제목, 사이드바 active 상태가 항상 일치합니다.
+## Next-Step Contract
+
+`nextViewById` in `App.tsx` controls the training header's next-step button. Its active flow is:
+
+```text
+survey -> difficulty -> script-outdoor -> roleplay-hub
+```
+
+The group-specific script routes also point to `roleplay-hub`. The legacy `roleplay` alias points to `practice`, and `practice` points to `ai-settings`. Parent hubs and detailed scenario routes intentionally do not force a next step because users may choose a branch or repeat training there.
+
+## Synchronization Rules
+
+- `ScriptDashboardV2` reports a group change through `onScriptChange`, and `App.tsx` updates `activeView`. This keeps body content, page title, progress header, and sidebar active state synchronized.
+- The sidebar expander state is local presentation state. Selecting a child route explicitly opens its parent family.
+- A group page should remain reachable through both its sidebar item and its hub card.
+- `roleplay-formula` must show only the formula and scenario-group cards. Detailed Eva questions and sample answers belong in the selected `roleplay-*` route.

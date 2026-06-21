@@ -1,59 +1,123 @@
 # Architecture
 
-## Current Additions
-
-- `TrainingHub` owns the `OPIc 실전 훈련하기` overview. `AppShell` renders the sticky title/progress header only for the training hub and its STEP 1-5 descendants; information, home, and AI settings views use the content frame without that header.
-- `RoleplayFormulaView` keeps the formula page concise: it presents the six-step pattern and scenario-group cards, while detailed examples stay inside each group route.
-- `ExpandableSidebar` owns collapsible parent navigation for the candidate guide, STEP 3 scripts, and STEP 4 role-play. Parent routes render a hub; child routes render the detailed content.
-- `ExamGuideHub`, `ExamGuideOverview`, and `ExamGuideDay` provide the guide hub and the visual overview/day-of-exam pages. `ExamGuideDashboard` continues to own the application and results content.
-- `ScriptHub` and `ScriptDashboardV2` support two alternative stories per group. `additionalScripts.ts`, `additionalScriptTraining.ts`, and `additionalScriptReplacementGuides.ts` own the optional second story set and its training data.
-- `RoleplayHub` and `RoleplayViewV2` organize formulas and scenarios by survey group. `additionalRoleplays.ts` adds indoor/rest and further service scenarios.
-- `ExamGuideDashboard` owns the existing application and results detail pages; overview and exam-day have dedicated visual components.
-- `src/data/examGuideContent.ts` owns the structured candidate guide and cited effective-date notice. Time-sensitive rules must show a source note and link users to the official website.
-- `scripts.ts` remains the default 60-90 second story. Optional stories and their question-specific training data live in the `additionalScript*` data files.
-
 ## Runtime Model
 
-OOM은 Vite로 빌드되는 React 단일 페이지 정적 앱입니다. 서버 라우트와 데이터베이스가 없으며, GitHub Pages 또는 임의의 정적 서버의 `dist/` 폴더에서 실행됩니다.
+OOM is a browser-only React application built by Vite. It has no server route, database, authentication service, or bundled secret.
 
-`src/App.tsx`가 현재 `ViewId`와 전역 UI 상태를 소유합니다.
+- Entry point: `src/main.tsx`
+- Application coordinator: `src/App.tsx`
+- Navigation state: React `activeView` with the `ViewId` union from `src/components/layout/Sidebar.tsx`
+- Visual transitions: `AnimatePresence` and `motion.div` in `App.tsx`
+- Persistent browser state:
+  - `oom-theme` for dark mode
+  - `oom-llm-settings` for the user-entered LLM configuration
+- Deployment target: GitHub Pages or any static host serving `dist/`
 
-- `activeView`: 현재 화면
-- `darkMode`: `oom-theme` 키로 `localStorage`에 저장
-- `settings`: 내부 LLM 호출 설정, `oom-llm-settings` 키로 `localStorage`에 저장
-- `toast`: 공통 완료/오류 피드백
+Do not introduce React Router only to represent the current view. The state-driven model intentionally keeps static hosting simple.
 
-## Component Boundaries
+## App Shell
 
-| 영역 | 소유 컴포넌트 | 책임 |
+`AppShell` owns the shared responsive frame.
+
+| Owner | Responsibility |
+| --- | --- |
+| `AppShell` | Desktop shell, mobile controls, training-only sticky header, progress bar, next-step button |
+| `ExpandableSidebar` | Desktop/mobile navigation, guide and training expanders, theme control |
+| `Sidebar.tsx` | `ViewId` contract and page-title mapping only |
+| `Toast` | Shared completion, warning, and error feedback |
+
+The sticky header is intentionally limited to `training-hub` and the STEP 1-5 descendants. Home, the OPIc candidate guide, and AI settings use the content frame without a training progress bar. On mobile, those non-training pages keep compact floating menu/theme controls so navigation is never lost.
+
+## Navigation Ownership
+
+`App.tsx` is the only place that selects a top-level screen from `activeView`.
+
+```text
+Home
+├─ OPIc candidate guide
+│  ├─ overview and grades
+│  ├─ application and fees
+│  ├─ exam day
+│  └─ results and certificates
+├─ OPIc training hub
+│  ├─ STEP 1 survey
+│  ├─ STEP 2 difficulty
+│  ├─ STEP 3 script hub
+│  │  └─ four script groups
+│  ├─ STEP 4 role-play hub
+│  │  └─ formula and four scenario groups
+│  └─ STEP 5 practice
+└─ AI feedback and settings
+```
+
+Parent hubs explain the purpose of their child pages. Parent routes should not silently jump straight to a child detail page.
+
+## Feature Boundaries
+
+| Area | Primary components | Contract |
 | --- | --- | --- |
-| 앱 프레임 | `AppShell`, `UnifiedSidebar` | 사이드바, 상단 진행 표시, 모바일 메뉴, 화면 전환 |
-| 서베이 | `BackgroundSurveySheet` | 전체 선택지 표시, OOM 추천 답안, 연습·채점 |
-| 난이도 | `DifficultyGuide` | 5→5 추천과 목표 등급별 말하기 전략 |
-| 스크립트 | `ScriptDashboard`, `ScriptDetail`, `MemoryModeToggle`, `TtsControls` | 그룹 선택, 암기 모드, TTS, 복사, AI 변형 |
-| 롤플레이 | `RoleplayView` | 공식, 시나리오, 수준별 예시, AI 질문 생성 |
-| 실전 연습 | `PracticeView`, `PracticeTimer`, `Recorder` | 랜덤 질문, 타이머, 녹음, 텍스트 답변, AI 피드백 |
-| AI 설정 | `AiSettingsView`, `AiSettingsPanel` | 브라우저 로컬 설정 입력과 저장 |
+| Home | `HomeView` | Product overview and entry points |
+| Candidate guide | `ExamGuideHub`, `ExamGuideOverview`, `ExamGuideDashboard`, `ExamGuideDay`, `ExamGuideTabs` | Informational content with official-source links for time-sensitive rules |
+| Training overview | `TrainingHub` | Explains STEP 1-5 and links to each stage |
+| Survey | `BackgroundSurveySheet` | Full survey-like list, fixed recommendation view, rehearsal mode and scoring |
+| Difficulty | `DifficultyGuide` | 5-5 guidance and target-level speaking strategies |
+| Script training | `ScriptHub`, `ScriptDashboardV2`, `ScriptTrainingTabs`, `ScriptTrainingGuide`, `MemoryModeToggle`, `TtsControls` | Choose one story set, then train main story, question variations, and answer blueprint |
+| Role-play | `RoleplayHub`, `RoleplayFormulaView`, `RoleplayViewV2` | Formula page links to scenario groups; detailed examples appear only in group pages |
+| Practice | `PracticeView`, `PracticeTimer`, `Recorder` | Random question, timer, in-memory audio, text response, feedback request |
+| AI settings | `AiSettingsView`, `AiSettingsPanel` | Runtime-only LLM endpoint and request-shape configuration |
+
+Some older presentation components remain in the source tree for now. They are not route owners. Use `App.tsx` and `docs/ROUTING.md` to determine the active implementation before editing.
+
+## Script Training Contract
+
+`scripts.ts` owns each default 60-90 second reusable scene. `additionalScripts.ts` contains an optional alternative scene for the same group.
+
+The choice is intentional:
+
+1. The learner picks one story set in a group.
+2. The selected story remains the main scene.
+3. A variation changes the question entry point and selected blocks, not the whole underlying experience.
+4. The blueprint explains which opening, detail, or closing block should be kept or replaced.
+
+`ScriptTrainingTabs` owns the `story`, `variants`, and `blueprint` views. Preserve this separation when adding a group or a story alternative.
 
 ## Data Ownership
 
-데이터는 화면 컴포넌트에 하드코딩하지 않고 `src/data/`에 둡니다.
+| Data file | Source of truth |
+| --- | --- |
+| `fixedSurvey.ts` | Survey parts, OOM recommended answer IDs, rehearsal answer key |
+| `scripts.ts` | Default script groups and primary stories |
+| `additionalScripts.ts` | Optional second story set for each script group |
+| `scriptTrainingData.ts` | Default question-type variations and blueprints |
+| `additionalScriptTraining.ts` | Variation data for optional stories |
+| `scriptReplacementGuides.ts` | Default replacement-block lookup |
+| `additionalScriptReplacementGuides.ts` | Replacement-block lookup for optional stories |
+| `questions.ts` | Random-practice question pool |
+| `roleplays.ts` | Six-step formula, reusable phrases, core scenarios |
+| `additionalRoleplays.ts` | Additional indoor/rest, sports, and home scenarios |
+| `examGuideContent.ts` | Candidate-guide information, official links, source-note copy |
 
-- `fixedSurvey.ts`: 실제형 서베이의 전체 선택지, OOM 추천 ID, Part 4 선택 수
-- `scripts.ts`: 재사용 답변 스크립트
-- `questions.ts`: 실전 연습 질문 풀
-- `roleplays.ts`: 롤플레이 시나리오와 수준별 차이
+Do not duplicate these values in view components. Add to the relevant data owner instead.
 
-## Script Variants
+## Browser and LLM Boundaries
 
-`src/data/scriptVariants.ts` keeps three short examples for every script group. Each example pairs an expected question with a pivot note, retained keywords, and a 30-45 second English response. `ScriptTrainingTabs` presents those examples separately from the main 60-90 second script so learners reuse one scene rather than memorizing unrelated answers.
+| Capability | Module | Behavior |
+| --- | --- | --- |
+| TTS | `lib/speech.ts` | Uses Web Speech API, prefers `en-US`, then `en-GB`, then other English voices |
+| Recording | `lib/recorder.ts` and `Recorder` | Uses `MediaRecorder` and `getUserMedia`; audio remains in browser memory |
+| LLM | `lib/llm.ts` | Calls the configured endpoint directly from the browser |
 
-## Browser and Network APIs
+`callInternalLlm` supports OpenAI-compatible, generic messages, and custom JSON-body modes. The app can send Bearer, `x-api-key`, or no authentication header. Endpoint CORS support is required.
 
-- TTS: Web Speech API
-- 녹음: MediaRecorder API, 녹음 파일은 메모리에만 유지
-- LLM: `callInternalLlm`이 브라우저에서 내부 endpoint를 직접 호출. CORS가 필요하며 실패 시 앱 내장 fallback을 사용
+Never put a real API key in source, fixtures, documentation examples, or commits.
 
-## Deployment
+## Testing and Build
 
-`.github/workflows/pages.yml`은 `main` push에서 테스트·빌드·Pages artifact 업로드·배포를 수행합니다. 최초 한 번 GitHub 저장소 **Settings → Pages**에서 Source를 **GitHub Actions**로 활성화해야 합니다.
+- Tests: Vitest + Testing Library
+- Route/shell smoke coverage: `App.test.tsx`, `ExamGuide.test.tsx`, `TrainingNavigation.test.tsx`
+- Survey behavior coverage: `OomSurvey.test.tsx`
+- Script-tab smoke coverage: `ScriptTrainingTabs.test.tsx`
+- Production build: TypeScript project build followed by Vite build
+- Pages check: `scripts/verify-pages-artifact.mjs` verifies bundled asset references in `dist/index.html`
+
+See `AGENTS.md` for the required validation command sequence.

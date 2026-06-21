@@ -1,5 +1,12 @@
 # OOM Instructions for Claude Code
 
-이 저장소에서 작업하기 전에 반드시 [AGENTS.md](AGENTS.md)를 읽습니다.
+Read `AGENTS.md` before making changes. Then read, in order:
 
-추가 설계 문서는 `docs/ARCHITECTURE.md`, `docs/ROUTING.md`, `docs/PROJECT_SNAPSHOT.md` 순서로 확인합니다. 변경 후에는 `npm run lint`, `npm run test`, `npm run build`를 실행합니다.
+1. `README.md`
+2. `docs/ARCHITECTURE.md`
+3. `docs/ROUTING.md`
+4. `docs/PROJECT_SNAPSHOT.md`
+
+`AGENTS.md` is the source of truth for constraints, data ownership, navigation rules, and validation. In particular, preserve the `OPIc 실전 훈련하기` hierarchy, the training-only progress header, and the rule that LLM credentials never enter the repository.
+
+Run the required validation commands from `AGENTS.md` before completing work. Run `npm run docs:generate` and `npm run docs:check` whenever documentation structure, source files, or package scripts change.

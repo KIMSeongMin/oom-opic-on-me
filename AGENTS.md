@@ -1,44 +1,55 @@
 # OOM Agent Guide
 
-`OOM (OPIc On Me)`은 사내 OPIc 말하기 훈련을 위한 Vite + React 정적 웹앱입니다. 백엔드가 없으며, 브라우저 API와 사용자가 입력한 내부 LLM 설정만 사용합니다.
+`OOM (OPIc On Me)` is a Vite + React static web app for OPIc speaking practice. It has no backend. Browser APIs and user-provided internal LLM settings are the only runtime integrations.
 
-## Read This First
+## Read First
 
-작업을 시작하기 전에 아래 순서로 읽습니다.
+Before changing code, read these in order:
 
-1. `README.md` - 설치, 실행, 배포, 브라우저 권한
-2. `docs/ARCHITECTURE.md` - 화면과 상태, 데이터, 브라우저 기능의 경계
-3. `docs/ROUTING.md` - `ViewId` 기반 탭 라우팅과 화면 소유 컴포넌트
-4. `docs/PROJECT_SNAPSHOT.md` - 현재 파일 및 npm script 스냅샷
-5. 수정하려는 기능의 컴포넌트와 대응하는 `src/data/*.ts`
+1. `README.md` for setup, deployment, permissions, and LLM configuration.
+2. `docs/ARCHITECTURE.md` for runtime ownership and data boundaries.
+3. `docs/ROUTING.md` for `ViewId` routes, sidebar hierarchy, and header behavior.
+4. `docs/PROJECT_SNAPSHOT.md` for the generated file and package-script inventory.
+5. The affected component and its corresponding `src/data/*.ts` source.
 
 ## Non-Negotiable Constraints
 
-- 앱은 GitHub Pages와 사내 정적 호스팅에서 동작해야 합니다. 서버 전용 코드, 비밀 키, 런타임 환경 의존성을 추가하지 않습니다.
-- 내부 LLM API 키는 `localStorage` 런타임 설정에만 둡니다. 코드, 테스트, README 예시, 커밋에 실제 키를 넣지 않습니다.
-- UI는 한국어 중심이며, zinc/slate 기반에 indigo·emerald·amber를 보조색으로 사용합니다.
-- STEP 1~5의 사이드바 항목은 동일한 상위 버튼 패턴을 유지합니다. STEP 3의 그룹은 하위 선택지일 뿐 별도 섹션 제목처럼 만들지 않습니다.
-- `BackgroundSurveySheet`는 실제형 선택지 전체를 보여 주되, OOM 고정 조합과 연습 모드의 정답 데이터는 반드시 `src/data/fixedSurvey.ts`에서만 관리합니다.
-- 기존 기능과 무관한 대규모 리팩터링을 피하고, 접근 가능한 버튼 이름·키보드 포커스·로딩/에러 상태를 보존합니다.
+- Keep the app deployable to GitHub Pages and ordinary static hosting. Do not add server-only code, secrets, or runtime server dependencies.
+- Never hardcode an API key. Internal LLM settings live only in browser `localStorage` through the runtime settings UI.
+- Keep the UI Korean-first, with zinc/slate foundations and restrained indigo, emerald, and amber accents.
+- `BackgroundSurveySheet` must render the full survey-like list. Recommended answers and rehearsal scoring data are owned only by `src/data/fixedSurvey.ts`.
+- `OPIc 실전 훈련하기` owns STEP 1 through STEP 5 in the sidebar. STEP 3 and STEP 4 have a further nested group level; preserve this hierarchy.
+- The sticky title/progress header is a training-only affordance. It is visible for `training-hub` and its STEP descendants, but not for Home, the candidate guide, or AI settings.
+- A script group offers story choices, not additional mandatory memorization. The 60-90 second primary story and a short question-type variation must remain connected to the same scene.
+- Keep accessible names, keyboard focus states, loading/error states, and mobile navigation intact.
+- Avoid unrelated refactors. Existing legacy presentation files may remain in the repository; route ownership is defined by `src/App.tsx` and `docs/ROUTING.md`.
 
 ## Architecture At A Glance
 
-- 앱 진입: `src/main.tsx` → `src/App.tsx`
-- 화면 전환: React state의 `ViewId`; React Router를 사용하지 않습니다.
-- 공통 프레임: `src/components/layout/AppShell.tsx`, `src/components/layout/UnifiedSidebar.tsx`
-- 콘텐츠 데이터: `src/data/scripts.ts`, `src/data/questions.ts`, `src/data/roleplays.ts`, `src/data/fixedSurvey.ts`
-- 브라우저 API: `src/lib/speech.ts`, `src/lib/recorder.ts`
-- LLM 어댑터: `src/lib/llm.ts`
+- Entry: `src/main.tsx` -> `src/App.tsx`
+- Routing: React state with `ViewId`; no React Router
+- Shell: `src/components/layout/AppShell.tsx` and `ExpandableSidebar.tsx`
+- Training hub: `src/components/training/TrainingHub.tsx`
+- Script flow: `ScriptHub` -> `ScriptDashboardV2` -> `ScriptTrainingTabs`
+- Role-play flow: `RoleplayHub` -> `RoleplayFormulaView` or group-specific `RoleplayViewV2`
+- Candidate guide: `ExamGuideHub` plus overview, application, day-of-exam, and results views
+- Browser APIs: `src/lib/speech.ts`, `src/lib/recorder.ts`
+- LLM adapter: `src/lib/llm.ts`
 
-## Script Variants
+## Data Ownership
 
-- `src/data/scriptVariants.ts` owns the 30-45 second question-type examples and the four-step answer blueprints.
-- Keep the 60-90 second `scripts.ts` story as the primary reusable scene. Variants should change only the question entry point, not create unrelated stories.
-- `ScriptTrainingTabs` owns the `story`, `variants`, and `blueprint` views. Preserve this separation when adding a new script group.
+- `fixedSurvey.ts`: full survey structure, OOM fixed recommendations, rehearsal answer key
+- `scripts.ts`: default 60-90 second script stories
+- `additionalScripts.ts`: optional second story in each script group
+- `scriptTrainingData.ts` and `additionalScriptTraining.ts`: question-type variations and answer blueprints
+- `scriptReplacementGuides.ts` and `additionalScriptReplacementGuides.ts`: reusable replacement blocks
+- `questions.ts`: practice question pool
+- `roleplays.ts` and `additionalRoleplays.ts`: role-play formula, scenarios, and level guidance
+- `examGuideContent.ts`: time-sensitive candidate-guide content and official links
 
 ## Required Validation
 
-코드 또는 스타일을 바꾼 뒤 아래를 실행합니다.
+After code or style changes, run:
 
 ```bash
 npm run lint
@@ -47,14 +58,16 @@ npm run build
 npm run verify:pages
 ```
 
-문서 구조나 npm script를 바꿨다면 아래도 실행하고 결과를 확인합니다.
+After documentation, file-inventory, or package-script changes, also run:
 
 ```bash
 npm run docs:generate
+npm run docs:check
 ```
 
 ## Documentation Maintenance
 
-- 구조·라우팅·데이터 소유권이 바뀌면 `docs/ARCHITECTURE.md`와 `docs/ROUTING.md`를 같이 갱신합니다.
-- 파일 목록 또는 package script가 달라지면 `npm run docs:generate`를 실행해 `docs/PROJECT_SNAPSHOT.md`를 갱신합니다.
-- Claude Code는 `CLAUDE.md`, Roo Code는 `.roo/rules/oom-project.md`를 통해 이 문서로 안내됩니다.
+- Update `docs/ARCHITECTURE.md` when component ownership, data ownership, or browser/LLM boundaries change.
+- Update `docs/ROUTING.md` when a `ViewId`, sidebar level, route target, or header rule changes.
+- Run `npm run docs:generate` whenever source files or package scripts change; do not edit `docs/PROJECT_SNAPSHOT.md` manually.
+- `CLAUDE.md` and `.roo/rules/oom-project.md` point other code agents back to this guide.
