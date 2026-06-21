@@ -2,6 +2,8 @@
 
 ## Current Additions
 
+- `TrainingHub` owns the `OPIc 실전 훈련하기` overview. `AppShell` renders the sticky title/progress header only for the training hub and its STEP 1-5 descendants; information, home, and AI settings views use the content frame without that header.
+- `RoleplayFormulaView` keeps the formula page concise: it presents the six-step pattern and scenario-group cards, while detailed examples stay inside each group route.
 - `ExpandableSidebar` owns collapsible parent navigation for the candidate guide, STEP 3 scripts, and STEP 4 role-play. Parent routes render a hub; child routes render the detailed content.
 - `ExamGuideHub`, `ExamGuideOverview`, and `ExamGuideDay` provide the guide hub and the visual overview/day-of-exam pages. `ExamGuideDashboard` continues to own the application and results content.
 - `ScriptHub` and `ScriptDashboardV2` support two alternative stories per group. `additionalScripts.ts`, `additionalScriptTraining.ts`, and `additionalScriptReplacementGuides.ts` own the optional second story set and its training data.

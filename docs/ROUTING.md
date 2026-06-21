@@ -2,6 +2,10 @@
 
 ## Current Additions
 
+`training-hub` is the parent route for STEP 1 through STEP 5. The sidebar nests those steps under **OPIc 실전 훈련하기** and nests the STEP 3/4 group selectors one level deeper. Only `training-hub` and its descendants render the sticky training progress header.
+
+`roleplay-formula` renders `RoleplayFormulaView`, which links to scenario groups instead of rendering every detailed scenario in the formula page.
+
 `exam-guide`, `script-hub`, and `roleplay-hub` are parent hub routes. Their sidebar menus stay collapsed by default and expand for the active family. Child routes open the related information or training page.
 
 STEP 3 routes now use `ScriptDashboardV2`; each survey group offers two story sets and the learner chooses one. STEP 4 routes now use `RoleplayViewV2`, including separate travel, indoor/rest, sports, and home scenario pages.

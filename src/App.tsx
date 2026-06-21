@@ -11,10 +11,12 @@ import { AppShell } from "./components/layout/AppShell";
 import type { ViewId } from "./components/layout/Sidebar";
 import { PracticeView } from "./components/practice/PracticeView";
 import { RoleplayHub } from "./components/roleplay/RoleplayHub";
+import { RoleplayFormulaView } from "./components/roleplay/RoleplayFormulaView";
 import { RoleplayViewV2 } from "./components/roleplay/RoleplayViewV2";
 import { ScriptDashboardV2 } from "./components/script/ScriptDashboardV2";
 import { ScriptHub } from "./components/script/ScriptHub";
 import { BackgroundSurveySheet } from "./components/survey/BackgroundSurveySheet";
+import { TrainingHub } from "./components/training/TrainingHub";
 import { Toast } from "./components/ui/Toast";
 import type { LlmSettings, ToastMessage } from "./types";
 
@@ -28,7 +30,7 @@ const scriptViewById: Record<string, ViewId> = {
   "home-residence": "script-home",
 };
 const nextViewById: Partial<Record<ViewId, { view: ViewId; label: string }>> = {
-  home: { view: "survey", label: "STEP 1" },
+  home: { view: "training-hub", label: "실전 훈련" },
   survey: { view: "difficulty", label: "STEP 2" },
   difficulty: { view: "script-outdoor", label: "STEP 3" },
   "script-outdoor": { view: "roleplay-hub", label: "STEP 4" },
@@ -63,11 +65,12 @@ export default function App() {
     if (activeView === "exam-overview") return <ExamGuideOverview onSectionChange={setActiveView} />;
     if (activeView === "exam-day") return <ExamGuideDay onSectionChange={setActiveView} />;
     if (activeView === "exam-apply" || activeView === "exam-results") return <ExamGuideDashboard initialSection={activeView} onNavigate={setActiveView} onSectionChange={setActiveView} />;
+    if (activeView === "training-hub") return <TrainingHub onNavigate={setActiveView} />;
     if (activeView === "survey") return <BackgroundSurveySheet />;
     if (activeView === "difficulty") return <DifficultyGuide />;
     if (activeView === "script-hub") return <ScriptHub onNavigate={setActiveView} />;
     if (activeView === "roleplay-hub") return <RoleplayHub onNavigate={setActiveView} />;
-    if (activeView === "roleplay" || activeView === "roleplay-formula") return <RoleplayViewV2 key="roleplay-formula" onToast={showToast} settings={settings} />;
+    if (activeView === "roleplay" || activeView === "roleplay-formula") return <RoleplayFormulaView onNavigate={setActiveView} />;
     if (activeView === "roleplay-travel") return <RoleplayViewV2 initialGroup="야외 / 여행" key="roleplay-travel" onToast={showToast} settings={settings} />;
     if (activeView === "roleplay-indoor") return <RoleplayViewV2 initialGroup="실내 / 휴식" key="roleplay-indoor" onToast={showToast} settings={settings} />;
     if (activeView === "roleplay-sports") return <RoleplayViewV2 initialGroup="운동 / 취미" key="roleplay-sports" onToast={showToast} settings={settings} />;
@@ -77,7 +80,7 @@ export default function App() {
     const scriptId = activeView === "script-outdoor" ? "outdoor-travel" : activeView === "script-indoor" ? "indoor-rest" : activeView === "script-sports" ? "sports-hobby" : "home-residence";
     return <ScriptDashboardV2 initialScriptId={scriptId} key={scriptId} onScriptChange={(nextScriptId) => setActiveView(scriptViewById[nextScriptId])} onToast={showToast} settings={settings} />;
   })();
-  const isStepView = ["survey", "difficulty", "script-outdoor", "script-indoor", "script-sports", "script-home", "roleplay", "roleplay-formula", "roleplay-travel", "roleplay-indoor", "roleplay-sports", "roleplay-home", "practice"].includes(activeView);
+  const isStepView = ["training-hub", "survey", "difficulty", "script-hub", "script-outdoor", "script-indoor", "script-sports", "script-home", "roleplay", "roleplay-hub", "roleplay-formula", "roleplay-travel", "roleplay-indoor", "roleplay-sports", "roleplay-home", "practice"].includes(activeView);
   const nextStep = nextViewById[activeView];
-  return <AppShell activeView={activeView} darkMode={darkMode} mobileOpen={mobileOpen} nextStep={nextStep ? { label: nextStep.label, onClick: () => setActiveView(nextStep.view) } : undefined} onCloseMobileMenu={() => setMobileOpen(false)} onNavigate={setActiveView} onToggleDarkMode={() => setDarkMode((value) => !value)} onToggleMobileMenu={() => setMobileOpen((value) => !value)}><AnimatePresence mode="wait"><motion.div animate={{ opacity: 1, y: 0 }} className={isStepView ? "step-page" : undefined} exit={{ opacity: 0, y: -6 }} initial={{ opacity: 0, y: 8 }} key={activeView} transition={{ duration: 0.2 }}>{screen}</motion.div></AnimatePresence><Toast onDismiss={() => setToast(null)} toast={toast} /></AppShell>;
+  return <AppShell activeView={activeView} darkMode={darkMode} mobileOpen={mobileOpen} nextStep={nextStep ? { label: nextStep.label, onClick: () => setActiveView(nextStep.view) } : undefined} onCloseMobileMenu={() => setMobileOpen(false)} onNavigate={setActiveView} onToggleDarkMode={() => setDarkMode((value) => !value)} onToggleMobileMenu={() => setMobileOpen((value) => !value)} showTrainingHeader={isStepView}><AnimatePresence mode="wait"><motion.div animate={{ opacity: 1, y: 0 }} className={isStepView ? "step-page" : undefined} exit={{ opacity: 0, y: -6 }} initial={{ opacity: 0, y: 8 }} key={activeView} transition={{ duration: 0.2 }}>{screen}</motion.div></AnimatePresence><Toast onDismiss={() => setToast(null)} toast={toast} /></AppShell>;
 }
