@@ -2,9 +2,13 @@
 
 ## Current Additions
 
-- `ExamGuideDashboard` is a four-page OPIc information hub: overview/grades, membership/application/fees, ID/admission/test flow, and results/certificates/coupons.
+- `ExpandableSidebar` owns collapsible parent navigation for the candidate guide, STEP 3 scripts, and STEP 4 role-play. Parent routes render a hub; child routes render the detailed content.
+- `ExamGuideHub`, `ExamGuideOverview`, and `ExamGuideDay` provide the guide hub and the visual overview/day-of-exam pages. `ExamGuideDashboard` continues to own the application and results content.
+- `ScriptHub` and `ScriptDashboardV2` support two alternative stories per group. `additionalScripts.ts`, `additionalScriptTraining.ts`, and `additionalScriptReplacementGuides.ts` own the optional second story set and its training data.
+- `RoleplayHub` and `RoleplayViewV2` organize formulas and scenarios by survey group. `additionalRoleplays.ts` adds indoor/rest and further service scenarios.
+- `ExamGuideDashboard` owns the existing application and results detail pages; overview and exam-day have dedicated visual components.
 - `src/data/examGuideContent.ts` owns the structured candidate guide and cited effective-date notice. Time-sensitive rules must show a source note and link users to the official website.
-- `scripts.ts` remains the primary 60-90 second story. `scriptTrainingData.ts` owns four expected questions per group, and `scriptReplacementGuides.ts` owns the opening/details/closing blocks that change for a selected question.
+- `scripts.ts` remains the default 60-90 second story. Optional stories and their question-specific training data live in the `additionalScript*` data files.
 
 ## Runtime Model
 

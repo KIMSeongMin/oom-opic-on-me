@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ArrowRight, Menu, Moon, Sun } from "lucide-react";
 import { Button } from "../ui/Button";
 import { type ViewId, viewTitles } from "./Sidebar";
-import { UnifiedSidebar } from "./UnifiedSidebar";
+import { ExpandableSidebar } from "./ExpandableSidebar";
 
 type AppShellProps = {
   activeView: ViewId;
@@ -31,7 +31,7 @@ export function AppShell({ activeView, children, darkMode, mobileOpen, onNavigat
   const progress = progressMap[activeView] ?? 0;
   return (
     <div className="min-h-screen bg-zinc-100 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-100 lg:flex">
-      <UnifiedSidebar activeView={activeView} mobileOpen={mobileOpen} onClose={onCloseMobileMenu} onNavigate={onNavigate} />
+      <ExpandableSidebar activeView={activeView} mobileOpen={mobileOpen} onClose={onCloseMobileMenu} onNavigate={onNavigate} />
       <main className="min-w-0 flex-1">
         <header className="sticky top-0 z-20 border-b border-zinc-200 bg-zinc-100/90 px-4 py-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90 sm:px-6 lg:px-9">
           <div className="mx-auto flex max-w-7xl items-center gap-3">

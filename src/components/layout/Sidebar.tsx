@@ -14,17 +14,25 @@ import { cn } from "../../lib/utils";
 
 export type ViewId =
   | "home"
+  | "exam-guide"
   | "exam-overview"
   | "exam-apply"
   | "exam-day"
   | "exam-results"
   | "survey"
   | "difficulty"
+  | "script-hub"
   | "script-outdoor"
   | "script-indoor"
   | "script-sports"
   | "script-home"
   | "roleplay"
+  | "roleplay-hub"
+  | "roleplay-formula"
+  | "roleplay-travel"
+  | "roleplay-indoor"
+  | "roleplay-sports"
+  | "roleplay-home"
   | "practice"
   | "ai-settings";
 
@@ -37,17 +45,25 @@ type SidebarProps = {
 
 export const viewTitles: Record<ViewId, string> = {
   home: "홈 / 전략 개요",
+  "exam-guide": "OPIc 수험 가이드",
   "exam-overview": "OPIc 수험 가이드 · 소개 · 등급",
   "exam-apply": "OPIc 수험 가이드 · 신청 · 응시료",
   "exam-day": "OPIc 수험 가이드 · 당일 진행",
   "exam-results": "OPIc 수험 가이드 · 성적 · 인증서",
   survey: "STEP 1. 서베이 고정 가이드",
   difficulty: "STEP 2. 난이도 설정",
+  "script-hub": "STEP 3. 만능 스크립트",
   "script-outdoor": "STEP 3. 야외 / 여행",
   "script-indoor": "STEP 3. 실내 / 휴식",
   "script-sports": "STEP 3. 운동 / 취미",
   "script-home": "STEP 3. 집 / 거주지",
   roleplay: "STEP 4. 롤플레이 공식",
+  "roleplay-hub": "STEP 4. 롤플레이 공식",
+  "roleplay-formula": "STEP 4. 롤플레이 공식 · 패턴과 출제 구조",
+  "roleplay-travel": "STEP 4. 롤플레이 · 야외 / 여행",
+  "roleplay-indoor": "STEP 4. 롤플레이 · 실내 / 휴식",
+  "roleplay-sports": "STEP 4. 롤플레이 · 운동 / 취미",
+  "roleplay-home": "STEP 4. 롤플레이 · 집 / 거주지",
   practice: "STEP 5. 실전 연습",
   "ai-settings": "AI 피드백 / 설정",
 };

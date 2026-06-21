@@ -1,6 +1,7 @@
 import { ArrowRight, CheckCircle2, Lightbulb, MessageCircleQuestion, RefreshCcw, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { getReplacementGuide } from "../../data/scriptReplacementGuides";
+import { additionalScriptTrainingSets } from "../../data/additionalScriptTraining";
 import { scriptTrainingSets } from "../../data/scriptTrainingData";
 import type { ScriptBlockId, ScriptItem, ScriptVariant } from "../../types";
 import { Badge } from "../ui/Badge";
@@ -15,7 +16,7 @@ const blockLabels: Record<ScriptBlockId, string> = {
 };
 
 function getVariantSet(script: ScriptItem) {
-  return scriptTrainingSets[script.id];
+  return scriptTrainingSets[script.id] ?? additionalScriptTrainingSets[script.id];
 }
 
 function getStoryBlocks(script: ScriptItem): StoryBlock[] {

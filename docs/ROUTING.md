@@ -2,7 +2,11 @@
 
 ## Current Additions
 
-`exam-overview`, `exam-apply`, `exam-day`, and `exam-results` render `ExamGuideDashboard`. The sidebar places the **OPIc 수험 가이드** parent directly below Home, with four nested navigation entries. It is an information area, not a training step; its primary call to action routes learners to `survey`.
+`exam-guide`, `script-hub`, and `roleplay-hub` are parent hub routes. Their sidebar menus stay collapsed by default and expand for the active family. Child routes open the related information or training page.
+
+STEP 3 routes now use `ScriptDashboardV2`; each survey group offers two story sets and the learner chooses one. STEP 4 routes now use `RoleplayViewV2`, including separate travel, indoor/rest, sports, and home scenario pages.
+
+`exam-overview` renders `ExamGuideOverview`, `exam-day` renders `ExamGuideDay`, and `exam-apply`/`exam-results` render `ExamGuideDashboard`. The candidate guide is an information area, not a training step.
 
 STEP 3 uses a three-block contract: `opening`, `details`, and `closing`. The question-variation tab should show which of those blocks are replaced or retained, while the answer-blueprint tab explains the same conversion rule with a selected expected question.
 
