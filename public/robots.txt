@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://natekeem.github.io/oom/sitemap.xml
