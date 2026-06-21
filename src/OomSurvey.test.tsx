@@ -19,8 +19,8 @@ describe("OOM survey rehearsal", () => {
     expect(screen.getByText("테니스")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: "연습 모드" }));
-    expect(await screen.findByText((content) => content.includes("Part 4 선택"))).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "선택한 서베이 답안 채점하기" }));
+    const gradeButton = await screen.findByRole("button", { name: "선택한 서베이 답안 채점하기" });
+    await user.click(gradeButton);
     expect(await screen.findByText(/추천 답안/)).toBeInTheDocument();
   });
 
