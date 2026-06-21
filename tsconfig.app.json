@@ -16,7 +16,7 @@
     "noEmit": true,
     "tsBuildInfoFile": "./node_modules/.cache/tsbuild/app.tsbuildinfo",
     "jsx": "react-jsx",
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals", "vite/client"]
   },
   "include": ["src"]
 }
