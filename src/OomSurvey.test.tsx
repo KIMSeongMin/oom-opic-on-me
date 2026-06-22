@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
@@ -18,9 +18,10 @@ describe("OOM survey rehearsal", () => {
     expect(screen.getByText("일 경험 없음")).toBeInTheDocument();
     expect(screen.getByText("테니스")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: "연습 모드" }));
-    expect(await screen.findByText("연습 모드: 직접 고른 뒤 채점하세요.")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: /채점하기$/ }));
+    const practiceModeButton = screen.getByRole("button", { name: "연습 모드" });
+    await user.click(practiceModeButton);
+    await waitFor(() => expect(practiceModeButton).toHaveAttribute("aria-pressed", "true"));
+    await user.click(await screen.findByText("채점하기", { selector: "button" }));
     expect(await screen.findByText(/추천 답안/)).toBeInTheDocument();
   });
 
