@@ -35,22 +35,10 @@ jobs:
         run: npm run build
       - name: Verify Pages artifact
         run: npm run verify:pages
-      - name: Archive Pages artifact
-        run: |
-          tar \
-            --dereference --hard-dereference \
-            --directory "./dist" \
-            -cvf "$RUNNER_TEMP/artifact.tar" \
-            --exclude=.git \
-            --exclude=.github \
-            --exclude=".[^/]*" \
-            .
       - name: Upload Pages artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: github-pages
-          path: ${{ runner.temp }}/artifact.tar
-          retention-days: 1
+          path: ./dist
 
   deploy:
     environment:
