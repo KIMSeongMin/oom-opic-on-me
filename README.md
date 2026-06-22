@@ -73,10 +73,10 @@ npm run preview
 
 ## GitHub Pages 배포
 
-이 저장소는 `main` 브랜치 푸시 시 `.github/workflows/pages.yml`로 테스트, 빌드, Pages 아티팩트 검증, 배포를 실행합니다.
+이 저장소는 `feature/adsense` 또는 `main` 브랜치 푸시 시 `.github/workflows/pages.yml`로 테스트, 빌드, Pages 아티팩트 검증, 배포를 실행합니다.
 
-1. 저장소 **Settings > Pages**에서 Source를 **GitHub Actions**로 설정합니다.
-2. `main`에 푸시합니다.
+1. 저장소 **Settings > Pages**에서 Source를 **GitHub Actions**로 설정합니다. 브랜치 직접 배포를 선택하면 Vite의 개발용 `index.html`이 배포되어 사이트가 정상 동작하지 않습니다.
+2. `feature/adsense` 또는 `main`에 푸시합니다.
 3. Actions의 `Deploy OOM to GitHub Pages` workflow 완료 후 Pages 주소를 확인합니다.
 
 개인 도메인으로 배포할 때는 Vite base(`/`)를 사용하므로, 사이트가 도메인 루트 경로에서 동작합니다. GitHub Pages의 프로젝트 하위 경로에 배포하려면 그 경로에 맞춘 별도 base 설정이 필요합니다.
