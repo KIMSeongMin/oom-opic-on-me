@@ -79,9 +79,9 @@ npm run preview
 2. `main`에 푸시합니다.
 3. Actions의 `Deploy OOM to GitHub Pages` workflow 완료 후 Pages 주소를 확인합니다.
 
-현재 설정은 상대 경로 Vite base(`./`)를 사용하므로, GitHub Pages뿐 아니라 사내 정적 서버에 `dist/` 폴더를 그대로 업로드해도 동작합니다.
+개인 도메인으로 배포할 때는 Vite base(`/`)를 사용하므로, 사이트가 도메인 루트 경로에서 동작합니다. GitHub Pages의 프로젝트 하위 경로에 배포하려면 그 경로에 맞춘 별도 base 설정이 필요합니다.
 
-현재 Pages 주소: [https://natekeem.github.io/oom/](https://natekeem.github.io/oom/)
+개인 도메인을 연결한 뒤에는 해당 도메인의 `/` 경로로 접속합니다.
 
 ## 내부 LLM 설정
 
