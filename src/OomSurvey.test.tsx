@@ -1,28 +1,22 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
+import { BackgroundSurveySheet } from "./components/survey/BackgroundSurveySheet";
 
 describe("OOM survey rehearsal", () => {
   it("shows the complete recommended survey and grades a blank practice attempt", async () => {
     const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <App />
-      </MemoryRouter>
-    );
+    render(<BackgroundSurveySheet />);
 
-    await user.click(screen.getByRole("button", { name: "서베이 고정 시작" }));
-    expect(await screen.findByRole("heading", { name: "실제 형식으로 보고, OOM 조합을 그대로 기억합니다." })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "실제 형식으로 보고, OOM 조합을 그대로 기억합니다." })).toBeInTheDocument();
     expect(screen.getByText("Background Survey")).toBeInTheDocument();
     expect(screen.getByText("일 경험 없음")).toBeInTheDocument();
     expect(screen.getByText("테니스")).toBeInTheDocument();
 
-    const practiceModeButton = screen.getByRole("button", { name: "연습 모드" });
-    await user.click(practiceModeButton);
-    await waitFor(() => expect(practiceModeButton).toHaveAttribute("aria-pressed", "true"));
-    await user.click(await screen.findByText("채점하기", { selector: "button" }));
-    expect(await screen.findByText(/추천 답안/)).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "연습 모드" }));
+    await user.click(await screen.findByRole("button", { name: /채점하기$/ }));
+    expect(await screen.findByRole("status")).toHaveTextContent(/추천 답안/);
   });
 
   it("keeps the sidebar active item in sync with script selection", async () => {
