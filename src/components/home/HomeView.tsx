@@ -29,7 +29,10 @@ export function HomeView({ onNavigate }: HomeViewProps) {
     <div className="space-y-6">
       <motion.section animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 10 }} className="grid gap-5 xl:grid-cols-[1.3fr_0.7fr]">
         <Card className="overflow-hidden bg-zinc-950 p-6 text-white sm:p-8">
-          <Badge tone="indigo" className="bg-indigo-500/20 text-indigo-200">OOM · OPIc On Me</Badge>
+          <span className="inline-flex flex-col">
+            <span className="block text-sm font-semibold text-zinc-950 dark:text-white">오픽온미</span>
+            <span className="block text-xs text-zinc-500 dark:text-zinc-400">OOM - OPIc On Me</span>
+          </span>
           <h1 className="mt-4 max-w-3xl text-balance text-3xl font-bold leading-tight sm:text-4xl">오픽온미와 함께 오픽은 나에게 맡기고, 반복 가능한 구조로 말합니다.</h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">OOM은 답을 통째로 암기하는 도구가 아닙니다. 익숙한 장면을 여러 질문에 맞게 자연스럽게 변형해 말하는 훈련 대시보드입니다.</p>
           <div className="mt-6 flex flex-wrap gap-3"><Button onClick={() => onNavigate("survey")}><Route className="h-4 w-4" />서베이 고정 시작</Button><Button onClick={() => onNavigate("script-outdoor")} variant="secondary"><Mic2 className="h-4 w-4" />스크립트 보기</Button></div>
