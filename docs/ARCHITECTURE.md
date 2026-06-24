@@ -57,6 +57,7 @@ Parent hubs explain the purpose of their child pages. Parent routes should not s
 | Area | Primary components | Contract |
 | --- | --- | --- |
 | Home | `HomeView` | Product overview and entry points |
+| OOM magazine | `MagazineList`, `MagazineDetail` | Static learning articles with local editorial images, summaries, examples, and practice takeaways |
 | Candidate guide | `ExamGuideHub`, `ExamGuideOverview`, `ExamGuideDashboard`, `ExamGuideDay`, `ExamGuideTabs` | Informational content with official-source links for time-sensitive rules |
 | Training overview | `TrainingHub` | Explains STEP 1-5 and links to each stage |
 | Survey | `BackgroundSurveySheet` | Full survey-like list, fixed recommendation view, rehearsal mode and scoring |
@@ -93,6 +94,7 @@ The choice is intentional:
 | `scriptReplacementGuides.ts` | Default replacement-block lookup |
 | `additionalScriptReplacementGuides.ts` | Replacement-block lookup for optional stories |
 | `questions.ts` | Random-practice question pool |
+| `magazine.ts` | OOM magazine article copy, learning examples, takeaways, and local editorial-image metadata |
 | `roleplays.ts` | Six-step formula, reusable phrases, core scenarios |
 | `additionalRoleplays.ts` | Additional indoor/rest, sports, and home scenarios |
 | `examGuideContent.ts` | Candidate-guide information, official links, source-note copy |

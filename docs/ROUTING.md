@@ -37,6 +37,7 @@ OPIc training hub
 │  ├─ sports / hobby
 │  └─ home / residence
 └─ STEP 5. practice
+OOM magazine
 AI feedback / settings
 ```
 
@@ -52,7 +53,7 @@ The candidate guide and training hub are independent top-level branches. STEP 1-
 - `roleplay`, `roleplay-hub`, `roleplay-formula`, and `roleplay-*`
 - `practice`
 
-Home, all `exam-*` views, and `ai-settings` do not render the sticky training header. Their mobile experience uses compact floating controls instead.
+Home, all `exam-*` views, `magazine-list` (including article detail URLs), and `ai-settings` do not render the sticky training header. Their mobile experience uses compact floating controls instead.
 
 ## Route Table
 
@@ -79,6 +80,7 @@ Home, all `exam-*` views, and `ai-settings` do not render the sticky training he
 | `roleplay-sports` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Court and class scenarios |
 | `roleplay-home` | Training / STEP 4 child | `RoleplayViewV2` | Yes, 80% | Moving, cleaning, repair scenarios |
 | `practice` | Training / STEP 5 | `PracticeView` | Yes, 100% | Random prompt, timer, recording, feedback |
+| `magazine-list` | Top-level magazine | `MagazineList` / `MagazineDetail` | No | `/magazine` lists static articles; `/magazine/:id` renders the selected article |
 | `ai-settings` | Top-level utility | `AiSettingsView` | No | LLM runtime configuration |
 | `roleplay` | Compatibility route only | `RoleplayFormulaView` | Yes, 80% | Do not add new navigation links to this alias |
 

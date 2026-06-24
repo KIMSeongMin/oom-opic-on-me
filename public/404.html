@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=/?p=%2F" />
+    <script>
+      (function () {
+        var path = location.pathname + location.search + location.hash;
+        var redirectUrl = '/?p=' + encodeURIComponent(path);
+        location.replace(redirectUrl);
+      })();
+    </script>
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <p>Redirecting to the application...</p>
+  </body>
+</html>
