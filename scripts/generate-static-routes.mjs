@@ -1,34 +1,10 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
-import { dirname, join } from 'path';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync, rmSync } from 'fs';
+import { join } from 'path';
 
 const projectRoot = process.cwd();
 const publicDir = join(projectRoot, 'public');
-
-const routes = [
-  '/',
-  '/exam-guide',
-  '/exam-guide/overview',
-  '/exam-guide/apply',
-  '/exam-guide/day',
-  '/exam-guide/results',
-  '/training',
-  '/training/survey',
-  '/training/difficulty',
-  '/training/scripts',
-  '/training/scripts/outdoor',
-  '/training/scripts/indoor',
-  '/training/scripts/sports',
-  '/training/scripts/home',
-  '/roleplay',
-  '/roleplay/formula',
-  '/roleplay/travel',
-  '/roleplay/indoor',
-  '/roleplay/sports',
-  '/roleplay/home',
-  '/practice',
-  '/ai-settings',
-  '/magazine'
-];
+const appPath = join(projectRoot, 'src', 'App.tsx');
+const magazinePath = join(projectRoot, 'src', 'data', 'magazine.ts');
 
 function buildHtmlFor(pathname) {
   const encoded = encodeURIComponent(pathname);
@@ -47,34 +23,74 @@ function buildHtmlFor(pathname) {
 </html>`;
 }
 
-// Ensure public dir exists
-if (!existsSync(publicDir)) {
-  mkdirSync(publicDir, { recursive: true });
-}
-
-for (const r of routes) {
-  const clean = r.replace(/^\//, '').replace(/\/$/, '');
-  const targetDir = clean === '' ? publicDir : join(publicDir, clean);
-  if (!existsSync(targetDir)) mkdirSync(targetDir, { recursive: true });
-  const outPath = join(targetDir, 'index.html');
-  writeFileSync(outPath, buildHtmlFor(r), 'utf8');
-  console.log('written', outPath);
-}
-
-// Parse magazine IDs from src/data/magazine.ts and generate per-article pages
-const magPath = join(projectRoot, 'src', 'data', 'magazine.ts');
-try {
-  const magSrc = readFileSync(magPath, 'utf8');
-  const ids = Array.from(magSrc.matchAll(/id:\s*"([^"]+)"/g)).map(m => m[1]);
-  for (const id of ids) {
-    const dir = join(publicDir, 'magazine', id);
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-    const out = join(dir, 'index.html');
-    writeFileSync(out, buildHtmlFor(`/magazine/${id}`), 'utf8');
-    console.log('written', out);
+function parseRoutes() {
+  const appSource = readFileSync(appPath, 'utf8');
+  const routePaths = new Set(['/']);
+  for (const match of appSource.matchAll(/path\s*=\s*"([^"]+)"/g)) {
+    const route = match[1];
+    if (!route.includes(':')) routePaths.add(route.replace(/\/*$/, ''));
   }
-} catch (e) {
-  console.warn('Could not parse magazine IDs:', e.message);
+  return Array.from(routePaths).sort((a, b) => a.localeCompare(b));
 }
 
+function parseMagazineRoutes() {
+  const magSource = readFileSync(magazinePath, 'utf8');
+  return Array.from(magSource.matchAll(/id:\s*"([^"]+)"/g)).map((m) => `/magazine/${m[1]}`);
+}
+
+function ensureDir(dirPath) {
+  if (!existsSync(dirPath)) mkdirSync(dirPath, { recursive: true });
+}
+
+function writeRouteFiles(routes) {
+  for (const route of routes) {
+    const clean = route.replace(/^\//, '').replace(/\/$/, '');
+    const targetDir = clean === '' ? publicDir : join(publicDir, clean);
+    ensureDir(targetDir);
+    const outPath = join(targetDir, 'index.html');
+    writeFileSync(outPath, buildHtmlFor(route), 'utf8');
+    console.log('written', outPath);
+  }
+}
+
+function generateSitemap(routes) {
+  const urls = routes.map((route) => {
+    const loc = `https://opic-on-me.com${route === '/' ? '' : route}`;
+    const depth = route.split('/').filter(Boolean).length;
+    const priority = route === '/' ? 1.0 : depth <= 2 ? 0.8 : 0.6;
+    return `  <url>
+    <loc>${loc}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>${priority.toFixed(1)}</priority>
+  </url>`;
+  });
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+  writeFileSync(join(publicDir, 'sitemap.xml'), sitemap, 'utf8');
+  console.log('updated sitemap.xml');
+}
+
+function cleanupStaleRouteDirs(validRoutes) {
+  const validTopLevel = new Set(validRoutes.map((route) => route.split('/').filter(Boolean)[0]).filter(Boolean));
+  validTopLevel.add('magazine');
+  for (const entry of readdirSync(publicDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const name = entry.name;
+    if (validTopLevel.has(name)) continue;
+    if (name === '_headers' || name === '_redirects') continue;
+    const stalePath = join(publicDir, name);
+    rmSync(stalePath, { recursive: true, force: true });
+    console.log('removed stale directory', stalePath);
+  }
+}
+
+ensureDir(publicDir);
+const routeList = parseRoutes();
+const magazineRoutes = parseMagazineRoutes();
+const allRoutes = Array.from(new Set([...routeList, '/magazine', ...magazineRoutes]));
+writeRouteFiles(allRoutes);
+cleanupStaleRouteDirs(allRoutes);
+generateSitemap(allRoutes);
 console.log('Static route generation complete.');
