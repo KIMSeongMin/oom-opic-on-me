@@ -1,8 +1,8 @@
 import { Check, ClipboardCheck, LockKeyhole, RotateCcw, Sparkles, Trophy } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   backgroundSurveySections,
-  recommendedPartFourCount,
+  recommendedActivityCount,
   recommendedSurveyIds,
   type BackgroundSurveyOption,
   type BackgroundSurveySection,
@@ -30,17 +30,21 @@ const compactStrategies = [
   { title: "집 / 거주지", detail: "가족과 거주 · 요리 · 집에서 쉬기" },
 ];
 
+type SurveyQuestionProps = {
+  mode: SurveyMode;
+  onChange: (section: BackgroundSurveySection, option: BackgroundSurveyOption) => void;
+  section: BackgroundSurveySection;
+  selected: Set<string>;
+  gridClass?: string;
+};
+
 function SurveyQuestion({
   mode,
   onChange,
   section,
   selected,
-}: {
-  mode: SurveyMode;
-  onChange: (section: BackgroundSurveySection, option: BackgroundSurveyOption) => void;
-  section: BackgroundSurveySection;
-  selected: Set<string>;
-}) {
+  gridClass,
+}: SurveyQuestionProps) {
   const isPractice = mode === "practice";
 
   return (
@@ -52,7 +56,7 @@ function SurveyQuestion({
           {section.minSelections ? <span className="ml-1 text-xs font-medium text-zinc-500 dark:text-zinc-400">({section.minSelections}개 이상)</span> : null}
         </h2>
       </div>
-      <div className="mt-4 grid gap-x-7 gap-y-2 sm:grid-cols-2">
+      <div className={`mt-4 grid gap-x-7 gap-y-2 ${gridClass ?? "sm:grid-cols-2 xl:grid-cols-4"}`}>
         {section.options.map((item) => {
           const checked = isPractice ? selected.has(item.id) : Boolean(item.recommended);
           const inputId = `${mode}-${section.id}-${item.id}`;
@@ -91,16 +95,30 @@ export function BackgroundSurveySheet() {
   const [mode, setMode] = useState<SurveyMode>("guide");
   const [selectedIds, setSelectedIds] = useState<string[]>(recommendedSurveyIds);
   const [result, setResult] = useState<GradeResult | null>(null);
+  const [currentPart, setCurrentPart] = useState(1);
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
-  const partFourSelected = backgroundSurveySections
-    .filter((section) => section.part.startsWith("Part 4"))
+  const activitySelected = backgroundSurveySections
+    .filter((section) => ["leisure", "interests", "sports", "vacation"].includes(section.id))
     .flatMap((section) => section.options)
     .filter((option) => selected.has(option.id)).length;
+
+  const profileSections = backgroundSurveySections.filter((section) => ["work", "student", "education", "residence"].includes(section.id));
+  const activitySections = backgroundSurveySections.filter((section) => ["leisure", "interests", "sports", "vacation"].includes(section.id));
+  const pages = [
+    { part: 1, title: "Part 1 of 7", sections: [profileSections[0]], gridClass: "sm:grid-cols-1 xl:grid-cols-1" },
+    { part: 2, title: "Part 2 of 7", sections: [profileSections[1], profileSections[2]], gridClass: "sm:grid-cols-1 xl:grid-cols-1" },
+    { part: 3, title: "Part 3 of 7", sections: [profileSections[3]], gridClass: "sm:grid-cols-1 xl:grid-cols-1" },
+    { part: 4, title: "Part 4 of 7", sections: [activitySections[0]], gridClass: "sm:grid-cols-2 xl:grid-cols-4" },
+    { part: 5, title: "Part 5 of 7", sections: [activitySections[1]], gridClass: "sm:grid-cols-2 xl:grid-cols-2" },
+    { part: 6, title: "Part 6 of 7", sections: [activitySections[2]], gridClass: "sm:grid-cols-2 xl:grid-cols-4" },
+    { part: 7, title: "Part 7 of 7", sections: [activitySections[3]], gridClass: "sm:grid-cols-1 xl:grid-cols-1" },
+  ];
 
   const beginPractice = () => {
     setMode("practice");
     setSelectedIds([]);
     setResult(null);
+    setCurrentPart(1);
   };
 
   const returnToGuide = () => {
@@ -132,9 +150,23 @@ export function BackgroundSurveySheet() {
     setResult({ correctCount: recommendedSurveyIds.length - missing.length, extra, missing });
   };
 
-  const leftSections = backgroundSurveySections.slice(0, 4);
-  const rightSections = backgroundSurveySections.slice(4);
   const isExact = result !== null && result.missing.length === 0 && result.extra.length === 0;
+
+  const slidePanelRef = useRef<HTMLDivElement | null>(null);
+  const scrollToPart = (part: number, behavior: ScrollBehavior = "auto") => {
+    const wrapper = slidePanelRef.current;
+    if (!wrapper) return;
+    const slide = wrapper.children[part - 1] as HTMLElement | undefined;
+    if (!slide) return;
+    wrapper.scrollTo({ left: slide.offsetLeft, behavior });
+  };
+
+  useEffect(() => {
+    scrollToPart(currentPart, "auto");
+  }, [currentPart]);
+
+  const goNext = () => setCurrentPart((part) => Math.min(part + 1, pages.length));
+  const goBack = () => setCurrentPart((part) => Math.max(part - 1, 1));
 
   return (
     <div className="space-y-6">
@@ -152,8 +184,8 @@ export function BackgroundSurveySheet() {
           <div className="flex items-center gap-3">
             <span className="grid h-9 w-9 place-items-center rounded-md bg-indigo-600 text-white"><LockKeyhole className="h-4 w-4" /></span>
             <div>
-              <p className="text-sm font-semibold text-indigo-950 dark:text-indigo-100">OOM 고정 조합: 기본 15개 선택</p>
-              <p className="text-xs leading-5 text-indigo-700 dark:text-indigo-300">Part 4에서 12개를 선택해 네 개의 답변 스토리로 정리합니다.</p>
+              <p className="text-sm font-semibold text-indigo-950 dark:text-indigo-100">추천 선택 조합: 기본 {recommendedSurveyIds.length}개 선택</p>
+              <p className="text-xs leading-5 text-indigo-700 dark:text-indigo-300">최신 문항 순서에 맞춰 선택지를 확인해 보세요.</p>
             </div>
           </div>
           <div aria-label="서베이 표시 모드" className="inline-flex w-full rounded-md border border-indigo-200 bg-white p-1 sm:w-auto dark:border-indigo-800 dark:bg-zinc-900" role="group">
@@ -168,7 +200,7 @@ export function BackgroundSurveySheet() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="flex items-center gap-2 text-sm font-bold text-amber-950 dark:text-amber-100"><Sparkles className="h-4 w-4" />답을 보지 말고 OOM 조합을 다시 체크해 보세요.</p>
-              <p className="mt-1 text-xs text-amber-800 dark:text-amber-200">Part 4 선택: <strong>{partFourSelected} / {recommendedPartFourCount}</strong></p>
+              <p className="mt-1 text-xs text-amber-800 dark:text-amber-200">여가·관심사·운동·휴가/출장 선택: <strong>{activitySelected} / {recommendedActivityCount}</strong></p>
             </div>
             <div className="flex gap-2">
               <Button aria-label="서베이 답안 다시 풀기" onClick={() => { setSelectedIds([]); setResult(null); }} size="sm" variant="secondary"><RotateCcw className="h-3.5 w-3.5" />다시 풀기</Button>
@@ -178,33 +210,46 @@ export function BackgroundSurveySheet() {
         </Card>
       ) : null}
 
-      <Card className="overflow-hidden bg-white dark:bg-zinc-950">
-        <div className="flex flex-col gap-1 border-b border-zinc-200 bg-zinc-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between [&>p:first-child]:!text-sm [&>p:last-child]:!text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:[&>p:last-child]:!text-zinc-400">
-          <p className="text-lg font-bold text-zinc-950 dark:text-white">Background Survey</p>
-          <p className="mt-0.5 text-xs text-sky-800 dark:text-sky-200">{mode === "guide" ? "OOM 추천 답안이 체크되어 있습니다." : "연습 모드: 직접 고른 뒤 채점하세요."}</p>
-        </div>
-        <div className="p-5 sm:p-7">
-          <div className="grid gap-x-10 gap-y-6 xl:grid-cols-2">
-            <div className="space-y-6">
-              {leftSections.slice(0, 3).map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
-            </div>
-            <div className="hidden xl:block" aria-hidden="true" />
+      <div className="space-y-6">
+        <Card className="overflow-hidden bg-white dark:bg-zinc-950">
+          <div className="flex flex-col gap-1 border-b border-zinc-200 bg-zinc-50 px-5 py-4 sm:flex-row sm:items-center sm:justify-between [&>p:first-child]:!text-sm [&>p:last-child]:!text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:[&>p:last-child]:!text-zinc-400">
+            <p className="text-lg font-bold text-zinc-950 dark:text-white">Background Survey</p>
+            <p className="mt-0.5 text-xs text-sky-800 dark:text-sky-200">{mode === "guide" ? "OOM 추천 답안이 체크되어 있습니다." : "연습 모드: 직접 고른 뒤 채점하세요."}</p>
           </div>
-          <div className="mt-7 border-t-2 border-zinc-300 pt-6 dark:border-zinc-700">
-            <div className="mb-5 flex flex-wrap items-center gap-2">
-              <p className="text-base font-bold text-zinc-950 dark:text-white">Part 4</p>
-              <Badge tone="amber">총 {recommendedPartFourCount}개 고정 선택</Badge>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">여가·취미·운동·여행 경험</span>
-            </div>
-            <div className="grid gap-x-10 gap-y-6 xl:grid-cols-[1.18fr_1fr]">
-              <SurveyQuestion key={leftSections[3].id} mode={mode} onChange={updateSelection} section={leftSections[3]} selected={selected} />
-              <div className="space-y-6">
-                {rightSections.map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
-              </div>
+          <div className="relative overflow-hidden p-5 sm:p-7">
+            <div ref={slidePanelRef} className="flex w-full gap-6 overflow-x-auto scroll-smooth pb-3 touch-pan-x snap-x snap-mandatory">
+              {pages.map(({ part, title, sections, gridClass }) => (
+                <div key={part} className="flex-none basis-full snap-start">
+                  <div className="relative min-h-[32rem] lg:min-h-[calc(100vh-18rem)] rounded-3xl border border-zinc-200 bg-zinc-50 p-5 pb-24 shadow-sm dark:border-zinc-800 dark:bg-zinc-950">
+                    <div className="flex flex-col">
+                      <div>
+                        <div className="flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-indigo-600 dark:text-indigo-300">{title}</p>
+                            <p className="mt-3 text-2xl font-bold text-zinc-950 dark:text-white">{sections.length > 1 ? "연결된 두 문항을 함께 확인하세요." : "한 문항씩 천천히 답하세요."}</p>
+                          </div>
+                          <span className="rounded-full bg-zinc-200 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-700 dark:bg-zinc-800 dark:text-zinc-200">{part} / 7</span>
+                        </div>
+                      </div>
+
+                      <div className="mt-6 flex-1 space-y-6">
+                        {sections.map((section) => (
+                          <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} gridClass={gridClass} />
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="absolute inset-x-5 bottom-5 z-10 flex flex-wrap items-center justify-end gap-2 px-2 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+                        <Button disabled={currentPart === 1} onClick={goBack} size="sm" variant="secondary">Back</Button>
+                        <Button onClick={goNext} size="sm">{currentPart === pages.length ? "완료" : "Next"}</Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </Card>
+        </Card>
+      </div>
 
       {mode === "practice" && result ? (
         <Card aria-live="polite" className={`p-5 ${isExact ? "border-emerald-300 bg-emerald-50 dark:border-emerald-800 dark:bg-emerald-950" : "border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950"}`} role="status">

@@ -21,7 +21,7 @@ Do not introduce React Router only to represent the current view. The state-driv
 
 | Owner | Responsibility |
 | --- | --- |
-| `AppShell` | Desktop shell, mobile controls, training-only sticky header, progress bar, next-step button |
+| `AppShell` | Desktop shell, fixed-height sidebar frame with main-content scrolling, mobile controls, training-only sticky header, progress bar, next-step button |
 | `ExpandableSidebar` | Desktop/mobile navigation, guide and training expanders, theme control |
 | `Sidebar.tsx` | `ViewId` contract and page-title mapping only |
 | `Toast` | Shared completion, warning, and error feedback |
