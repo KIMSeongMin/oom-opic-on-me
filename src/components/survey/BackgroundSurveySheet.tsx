@@ -2,7 +2,7 @@ import { Check, ClipboardCheck, LockKeyhole, RotateCcw, Sparkles, Trophy } from 
 import { useMemo, useState } from "react";
 import {
   backgroundSurveySections,
-  recommendedPartFourCount,
+  recommendedActivityCount,
   recommendedSurveyIds,
   type BackgroundSurveyOption,
   type BackgroundSurveySection,
@@ -92,8 +92,8 @@ export function BackgroundSurveySheet() {
   const [selectedIds, setSelectedIds] = useState<string[]>(recommendedSurveyIds);
   const [result, setResult] = useState<GradeResult | null>(null);
   const selected = useMemo(() => new Set(selectedIds), [selectedIds]);
-  const partFourSelected = backgroundSurveySections
-    .filter((section) => section.part.startsWith("Part 4"))
+  const activitySelected = backgroundSurveySections
+    .filter((section) => ["leisure", "interests", "sports", "vacation"].includes(section.id))
     .flatMap((section) => section.options)
     .filter((option) => selected.has(option.id)).length;
 
@@ -132,8 +132,8 @@ export function BackgroundSurveySheet() {
     setResult({ correctCount: recommendedSurveyIds.length - missing.length, extra, missing });
   };
 
-  const leftSections = backgroundSurveySections.slice(0, 4);
-  const rightSections = backgroundSurveySections.slice(4);
+  const profileSections = backgroundSurveySections.filter((section) => ["work", "student", "education", "residence"].includes(section.id));
+  const activitySections = backgroundSurveySections.filter((section) => ["leisure", "interests", "sports", "vacation"].includes(section.id));
   const isExact = result !== null && result.missing.length === 0 && result.extra.length === 0;
 
   return (
@@ -152,8 +152,8 @@ export function BackgroundSurveySheet() {
           <div className="flex items-center gap-3">
             <span className="grid h-9 w-9 place-items-center rounded-md bg-indigo-600 text-white"><LockKeyhole className="h-4 w-4" /></span>
             <div>
-              <p className="text-sm font-semibold text-indigo-950 dark:text-indigo-100">OOM 고정 조합: 기본 15개 선택</p>
-              <p className="text-xs leading-5 text-indigo-700 dark:text-indigo-300">Part 4에서 12개를 선택해 네 개의 답변 스토리로 정리합니다.</p>
+              <p className="text-sm font-semibold text-indigo-950 dark:text-indigo-100">추천 선택 조합: 기본 {recommendedSurveyIds.length}개 선택</p>
+              <p className="text-xs leading-5 text-indigo-700 dark:text-indigo-300">최신 문항 순서에 맞춰 선택지를 확인해 보세요.</p>
             </div>
           </div>
           <div aria-label="서베이 표시 모드" className="inline-flex w-full rounded-md border border-indigo-200 bg-white p-1 sm:w-auto dark:border-indigo-800 dark:bg-zinc-900" role="group">
@@ -168,7 +168,7 @@ export function BackgroundSurveySheet() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="flex items-center gap-2 text-sm font-bold text-amber-950 dark:text-amber-100"><Sparkles className="h-4 w-4" />답을 보지 말고 OOM 조합을 다시 체크해 보세요.</p>
-              <p className="mt-1 text-xs text-amber-800 dark:text-amber-200">Part 4 선택: <strong>{partFourSelected} / {recommendedPartFourCount}</strong></p>
+              <p className="mt-1 text-xs text-amber-800 dark:text-amber-200">여가·관심사·운동·휴가/출장 선택: <strong>{activitySelected} / {recommendedActivityCount}</strong></p>
             </div>
             <div className="flex gap-2">
               <Button aria-label="서베이 답안 다시 풀기" onClick={() => { setSelectedIds([]); setResult(null); }} size="sm" variant="secondary"><RotateCcw className="h-3.5 w-3.5" />다시 풀기</Button>
@@ -186,20 +186,22 @@ export function BackgroundSurveySheet() {
         <div className="p-5 sm:p-7">
           <div className="grid gap-x-10 gap-y-6 xl:grid-cols-2">
             <div className="space-y-6">
-              {leftSections.slice(0, 3).map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
+              {profileSections.map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
             </div>
             <div className="hidden xl:block" aria-hidden="true" />
           </div>
           <div className="mt-7 border-t-2 border-zinc-300 pt-6 dark:border-zinc-700">
             <div className="mb-5 flex flex-wrap items-center gap-2">
-              <p className="text-base font-bold text-zinc-950 dark:text-white">Part 4</p>
-              <Badge tone="amber">총 {recommendedPartFourCount}개 고정 선택</Badge>
-              <span className="text-xs text-zinc-500 dark:text-zinc-400">여가·취미·운동·여행 경험</span>
+              <p className="text-base font-bold text-zinc-950 dark:text-white">4. 여가 활동 · 5. 관심사 · 6. 운동 · 7. 휴가/출장</p>
+              <Badge tone="amber">총 {recommendedActivityCount}개 고정 선택</Badge>
+              <span className="text-xs text-zinc-500 dark:text-zinc-400">여가 활동·취미/관심사·운동·휴가/출장</span>
             </div>
             <div className="grid gap-x-10 gap-y-6 xl:grid-cols-[1.18fr_1fr]">
-              <SurveyQuestion key={leftSections[3].id} mode={mode} onChange={updateSelection} section={leftSections[3]} selected={selected} />
               <div className="space-y-6">
-                {rightSections.map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
+                {activitySections.slice(0, 2).map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
+              </div>
+              <div className="space-y-6">
+                {activitySections.slice(2).map((section) => <SurveyQuestion key={section.id} mode={mode} onChange={updateSelection} section={section} selected={selected} />)}
               </div>
             </div>
           </div>

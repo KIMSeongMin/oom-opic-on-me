@@ -37,7 +37,7 @@ const option = (id: string, label: string, recommended = false): BackgroundSurve
 export const backgroundSurveySections: BackgroundSurveySection[] = [
   {
     id: "work",
-    part: "Part 1",
+    part: "1.",
     title: "현재 귀하는 어느 분야에 종사하고 계십니까?",
     selection: "single",
     options: [
@@ -49,17 +49,29 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
   },
   {
     id: "student",
-    part: "Part 2",
-    title: "현재 당신은 학생입니까?",
+    part: "2.",
+    title: "현재 귀하는 학생이십니까?",
     selection: "single",
     options: [
       option("student-yes", "예"),
-      option("student-no", "아니오(수강 후 5년 이상 지남)", true),
+      option("student-no", "아니오", true),
+    ],
+  },
+  {
+    id: "education",
+    part: "2.2",
+    title: "최근 5년 이내에 수강했습니까?",
+    selection: "single",
+    options: [
+      option("education-college", "학위 과정 수강"),
+      option("education-language", "어학 수업"),
+      option("education-professional", "전문 기술 향상을 위한 평생 학습"),
+      option("education-over-five", "수강 후 5년 이상 지남", true),
     ],
   },
   {
     id: "residence",
-    part: "Part 3",
+    part: "3.",
     title: "현재 귀하는 어디에 살고 계십니까?",
     selection: "single",
     options: [
@@ -72,7 +84,7 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
   },
   {
     id: "leisure",
-    part: "Part 4-1",
+    part: "4.",
     title: "귀하는 여가 활동으로 주로 무엇을 하십니까?",
     selection: "multiple",
     minSelections: 2,
@@ -107,7 +119,7 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
   },
   {
     id: "interests",
-    part: "Part 4-2",
+    part: "5.",
     title: "귀하의 취미나 관심사는 무엇입니까?",
     selection: "multiple",
     minSelections: 1,
@@ -130,7 +142,7 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
   },
   {
     id: "sports",
-    part: "Part 4-3",
+    part: "6.",
     title: "귀하는 주로 어떤 운동을 즐기십니까?",
     selection: "multiple",
     minSelections: 1,
@@ -163,7 +175,7 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
   },
   {
     id: "vacation",
-    part: "Part 4-4",
+    part: "7.",
     title: "귀하는 어떤 휴가나 출장을 다녀온 경험이 있습니까?",
     selection: "multiple",
     minSelections: 1,
@@ -178,7 +190,7 @@ export const backgroundSurveySections: BackgroundSurveySection[] = [
 ];
 
 export const recommendedSurveyIds = backgroundSurveySections.flatMap((section) => section.options.filter((item) => item.recommended).map((item) => item.id));
-export const recommendedPartFourCount = backgroundSurveySections.filter((section) => section.part.startsWith("Part 4")).flatMap((section) => section.options.filter((item) => item.recommended)).length;
+export const recommendedActivityCount = backgroundSurveySections.filter((section) => ["leisure", "interests", "sports", "vacation"].includes(section.id)).flatMap((section) => section.options.filter((item) => item.recommended)).length;
 
 export const fixedSurveyGroups: FixedSurveyGroup[] = [
   {
@@ -188,7 +200,8 @@ export const fixedSurveyGroups: FixedSurveyGroup[] = [
     description: "시험의 기본 배경을 정하는 항목입니다.",
     answers: [
       { prompt: "현재 귀하의 직업 상태를 선택해 주세요.", answer: "일 경험 없음", kind: "single" },
-      { prompt: "현재 학생입니까?", answer: "아니오, 학생이 아닙니다.", kind: "single" },
+      { prompt: "현재 학생입니까?", answer: "아니오", kind: "single" },
+      { prompt: "최근 5년 이내에 수강했습니까?", answer: "수강 후 5년 이상 지남", kind: "single" },
     ],
   },
   {
