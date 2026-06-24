@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 Sitemap: https://opic-on-me.com/sitemap.xml
+
+#DaumWebMasterTool:65060abead33d6e2b681326105909620c6e0bb907df33e677a46526227511554:yHVvoj8D9Bmn6YWgRTZAtA==
