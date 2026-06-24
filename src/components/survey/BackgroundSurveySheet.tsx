@@ -7,7 +7,6 @@ import {
   type BackgroundSurveyOption,
   type BackgroundSurveySection,
 } from "../../data/fixedSurvey";
-import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { Card } from "../ui/Card";
 
@@ -158,7 +157,12 @@ export function BackgroundSurveySheet() {
     if (!wrapper) return;
     const slide = wrapper.children[part - 1] as HTMLElement | undefined;
     if (!slide) return;
-    wrapper.scrollTo({ left: slide.offsetLeft, behavior });
+    const position = { left: slide.offsetLeft, behavior };
+    if (typeof wrapper.scrollTo === "function") {
+      wrapper.scrollTo(position);
+      return;
+    }
+    wrapper.scrollLeft = slide.offsetLeft;
   };
 
   useEffect(() => {
