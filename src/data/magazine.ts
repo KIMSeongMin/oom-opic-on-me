@@ -1,6 +1,8 @@
 const gradeSpeakingPractice = new URL("../assets/magazine/grade-speaking-practice.webp", import.meta.url).href;
 const naturalConversation = new URL("../assets/magazine/natural-conversation.webp", import.meta.url).href;
 const oomStudyWorkflow = new URL("../assets/magazine/oom-study-workflow.webp", import.meta.url).href;
+const selfIntroductionCover = new URL("../assets/magazine/self-introduction-cover.jpg", import.meta.url).href;
+const selfIntroductionWarmup = new URL("../assets/magazine/self-introduction-warmup.jpg", import.meta.url).href;
 const strategyStoryPractice = new URL("../assets/magazine/strategy-story-practice.webp", import.meta.url).href;
 
 export type MagazineExample = {
@@ -12,6 +14,9 @@ export type MagazineExample = {
 export type MagazineArticleSection = {
   heading: string;
   paragraphs: string[];
+  image?: string;
+  imageAlt?: string;
+  imageCaption?: string;
   bullets?: string[];
   example?: MagazineExample;
   note?: { title: string; text: string };
@@ -33,6 +38,87 @@ export type MagazineArticle = {
 };
 
 export const magazineArticles: MagazineArticle[] = [
+  {
+    id: "opic-self-introduction-strategy",
+    category: "시험 전략",
+    title: "OPIc 자기소개, 꼭 해야 할까? 대충 해도 될까?",
+    subtitle: "점수용 답변처럼 길게 외우기보다, 첫 목소리를 안정시키는 짧은 워밍업으로 쓰는 편이 현실적입니다.",
+    date: "2026.06.26",
+    readMinutes: "6분 읽기",
+    summary: "자기소개는 OPIc 준비생들 사이에서도 의견이 갈립니다. 어떤 사람은 채점 핵심이 아니니 시간을 쓰지 말라고 하고, 어떤 사람은 첫 발화가 흔들리면 뒤 답변까지 영향을 준다고 말합니다. 결론은 단순합니다. 길게 외울 필요는 없지만, 20~30초짜리 자연스러운 시작 문장은 준비해 두는 편이 좋습니다.",
+    image: selfIntroductionCover,
+    imageAlt: "헤드셋을 끼고 노트에 자기소개 답변을 정리하는 학습자",
+    takeaway: "자기소개는 점수를 따는 긴 답변이 아니라 시험장에 내 목소리를 올려놓는 짧은 예열입니다. 이름과 신상보다 오늘 어떤 사람으로 말할지 보여 주는 20~30초면 충분합니다.",
+    disclaimer: "OPIc의 세부 채점 방식은 공개되어 있지 않습니다. 이 글은 공식 점수 보장 기준이 아니라, 준비생들이 자주 나누는 관점과 실전 연습 경험을 바탕으로 정리한 학습 전략입니다.",
+    sections: [
+      {
+        heading: "의견이 갈리는 이유",
+        paragraphs: [
+          "자기소개를 두고 가장 많이 나오는 말은 크게 두 가지입니다. 첫째, 자기소개는 본격 질문이 아니니 너무 공들일 필요가 없다는 의견입니다. 둘째, 그래도 시험의 첫 발화이기 때문에 준비 없이 들어가면 말 속도와 목소리 크기가 흔들릴 수 있다는 의견입니다.",
+          "공식 안내에서도 OPIc는 외운 발표를 확인하는 시험이 아니라 실제 상황에서 언어를 얼마나 사용할 수 있는지 보는 말하기 평가에 가깝다고 설명합니다. 그래서 자기소개도 완성된 대본을 보여 주는 시간으로 잡기보다, 자연스럽게 말하기 모드로 들어가는 짧은 예열로 보는 편이 안전합니다.",
+          "두 의견은 사실 서로 충돌하지 않습니다. 자기소개를 길게 외우는 것은 비효율적이지만, 짧고 쉬운 문장으로 입을 푸는 것은 도움이 됩니다. 특히 긴장하면 첫 문장이 갑자기 안 나오는 학습자라면 자기소개를 작은 안전장치처럼 준비하는 편이 낫습니다.",
+        ],
+        note: {
+          title: "OOM 관점",
+          text: "자기소개는 메인 답변의 리허설이 아닙니다. 시험장에서 내 발음, 속도, 호흡을 한번 맞춰 보는 시작 버튼에 가깝습니다.",
+        },
+      },
+      {
+        heading: "해야 한다면 어디까지 해야 할까",
+        paragraphs: [
+          "추천 길이는 20~30초입니다. 이름, 직업, 학교, 가족관계처럼 개인정보를 자세히 나열하기보다 내가 어떤 일상을 가진 사람인지 가볍게 보여 주면 충분합니다. 예를 들어 일하거나 공부하는 상황, 요즘 관심 있는 활동, 말하기 시험이라 조금 긴장된다는 자연스러운 한마디 정도면 됩니다.",
+          "반대로 1분이 넘는 자기소개를 외우면 본 질문에서 쓸 집중력이 먼저 빠질 수 있습니다. 게다가 지나치게 매끈한 암기문은 뒤의 즉흥 답변과 톤 차이가 커져서 오히려 어색하게 들릴 수 있습니다.",
+        ],
+        image: selfIntroductionWarmup,
+        imageAlt: "길게 외운 자기소개 메모와 짧은 워밍업 메모가 책상 위에 놓인 모습",
+        imageCaption: "긴 암기문보다 짧은 키워드 3개가 시험장에서는 더 오래 살아남습니다.",
+        bullets: [
+          "좋은 목표: 첫 목소리 크기 확인, 말 속도 안정, 쉬운 문장으로 시작하기",
+          "줄일 내용: 회사명, 학교명, 가족관계, 상세 주소, 길고 복잡한 목표 설명",
+          "적당한 길이: 천천히 말했을 때 4~5문장, 약 20~30초",
+        ],
+      },
+      {
+        heading: "대충 하는 것과 짧게 하는 것은 다릅니다",
+        paragraphs: [
+          "자기소개를 대충 해도 된다는 말은 아무 말이나 해도 된다는 뜻이 아닙니다. 핵심은 힘을 빼되 흐름은 갖추는 것입니다. 너무 짧게 끝내면 첫 답변부터 자신감이 없어 보일 수 있고, 너무 길게 말하면 다음 질문에서 리듬을 잃기 쉽습니다.",
+          "가장 좋은 방식은 쉬운 문장을 정확하게 말하고, 마지막을 다음 답변으로 넘어가기 좋은 분위기로 닫는 것입니다. 어려운 단어를 넣기보다 평소 내 말투에 가까운 표현을 고르세요.",
+        ],
+        example: {
+          title: "25초 자기소개 예시",
+          description: "그대로 외우기보다 내 상황에 맞는 단어만 바꿔 쓰세요.",
+          lines: [
+            "Hi, I'm Min. I work during the week, so I usually try to rest well on weekends.",
+            "These days, I like taking short walks and listening to music after work.",
+            "I'm a little nervous today, but I'll try to speak naturally and explain my experiences clearly.",
+          ],
+        },
+      },
+      {
+        heading: "자기소개에 넣으면 좋은 3가지",
+        paragraphs: [
+          "첫째, 현재 상태를 아주 간단히 말합니다. 직장인인지 학생인지, 혹은 요즘 어떤 생활 패턴인지 정도면 충분합니다. 둘째, 시험에서 다시 꺼낼 수 있는 취미나 일상 소재를 하나 넣습니다. 산책, 음악, 카페, 운동처럼 뒤 질문과 연결 가능한 소재가 좋습니다.",
+          "셋째, 오늘 말하기 태도를 한 문장으로 정리합니다. 예를 들어 자연스럽게 말해 보겠다, 내 경험을 천천히 설명하겠다는 식입니다. 이 문장은 실제 점수용 표현이라기보다 긴장한 나에게 주는 신호에 가깝습니다.",
+        ],
+        bullets: [
+          "현재 상태: I work during the week / I'm currently studying / I spend most days at home",
+          "연결 소재: I like walking, watching movies, or meeting friends on weekends",
+          "말하기 태도: I'll try to speak naturally and give clear examples",
+        ],
+      },
+      {
+        heading: "마지막 점검 루틴",
+        paragraphs: [
+          "시험 전날에는 자기소개 전체를 10번 외우기보다, 키워드 3개만 보고 말하는 연습을 3번 해보세요. 같은 문장을 완벽히 반복하는 것보다 조금씩 다르게 말해도 30초 안에 끝낼 수 있는지가 더 중요합니다.",
+          "시험 당일에는 첫 문장을 천천히 시작하세요. 빠르게 시작하면 자기소개가 끝난 뒤 본 질문에서도 계속 빨라지는 경우가 많습니다. 자기소개는 짧게, 또렷하게, 그리고 다음 질문을 받을 준비가 된 상태로 마무리하면 됩니다.",
+        ],
+        note: {
+          title: "한 줄 결론",
+          text: "안 해도 된다고 생각하고 버리기보다는, 길게 외우지 않는 짧은 예열문으로 준비하는 쪽이 가장 부담이 적습니다.",
+        },
+      },
+    ],
+  },
   {
     id: "opic-2026-strategy",
     category: "학습 전략",

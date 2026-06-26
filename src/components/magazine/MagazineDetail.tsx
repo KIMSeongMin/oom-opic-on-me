@@ -50,6 +50,12 @@ export function MagazineDetail() {
             <div className="space-y-4 text-[15px] leading-8 text-zinc-700 dark:text-zinc-300">
               {section.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
             </div>
+            {section.image ? (
+              <figure className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900">
+                <img alt={section.imageAlt ?? ""} className="aspect-[16/9] w-full object-cover" loading="lazy" src={section.image} />
+                {section.imageCaption ? <figcaption className="px-4 py-2.5 text-xs leading-5 text-zinc-500 dark:text-zinc-400">{section.imageCaption}</figcaption> : null}
+              </figure>
+            ) : null}
             {section.bullets ? (
               <ul className="space-y-2 rounded-xl bg-zinc-50 p-5 text-sm leading-7 text-zinc-700 dark:bg-zinc-900 dark:text-zinc-200">
                 {section.bullets.map((bullet) => <li className="flex gap-3" key={bullet}><span aria-hidden="true" className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-500" />{bullet}</li>)}

@@ -126,6 +126,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://opic-on-me.com/magazine/opic-self-introduction-strategy</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://opic-on-me.com/magazine/opic-2026-strategy</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
