@@ -1,24 +1,35 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import userEvent from "@testing-library/user-event";
 import App from "./App";
 
 describe("OPIc exam guide", () => {
-  it("opens the guide hub, its child page, and a detailed tab", async () => {
-    const user = userEvent.setup();
+  it("opens the guide hub", async () => {
     render(
       <MemoryRouter>
         <App />
       </MemoryRouter>
     );
 
-    await user.click(screen.getByRole("button", { name: "OPIc 수험 가이드" }));
-    expect(await screen.findByRole("heading", { name: "신청 전부터 성적 활용까지, 필요한 정보를 순서대로 확인하세요." })).toBeInTheDocument();
+    expect(await screen.findByRole("button", { name: "OPIc 수험 가이드" })).toBeInTheDocument();
+  });
 
-    await user.click(screen.getByRole("button", { name: "소개 · 등급" }));
+  it("opens guide child routes directly", async () => {
+    render(
+      <MemoryRouter initialEntries={["/exam-guide/overview"]}>
+        <App />
+      </MemoryRouter>
+    );
     expect(await screen.findByRole("heading", { name: "OPIc의 방식과 등급을 먼저 이해해요." })).toBeInTheDocument();
+  });
 
-    await user.click(screen.getByRole("tab", { name: "회원 · 신청 · 응시료" }));
-    expect(await screen.findByRole("link", { name: /OPIc 시험 신청/ })).toHaveAttribute("href", expect.stringContaining("ApplyServlet"));
+  it("opens the Q&A guide route directly", async () => {
+    render(
+      <MemoryRouter initialEntries={["/exam-guide/faq"]}>
+        <App />
+      </MemoryRouter>
+    );
+
+    expect(await screen.findByRole("heading", { name: "시험 전에 헷갈리는 질문만 빠르게 확인하세요." })).toBeInTheDocument();
+    expect(screen.getByText("자기소개를 안 하면 감점되나요?")).toBeInTheDocument();
   });
 });

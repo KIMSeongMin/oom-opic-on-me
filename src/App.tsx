@@ -7,6 +7,7 @@ import { ExamGuideDashboard } from "./components/guide/ExamGuideDashboard";
 import { ExamGuideHub } from "./components/guide/ExamGuideHub";
 import { ExamGuideOverview } from "./components/guide/ExamGuideOverview";
 import { ExamGuideDay } from "./components/guide/ExamGuideDay";
+import { ExamGuideFaq } from "./components/guide/ExamGuideFaq";
 import { HomeView } from "./components/home/HomeView";
 import { AppShell } from "./components/layout/AppShell";
 import type { ViewId } from "./components/layout/Sidebar";
@@ -68,6 +69,7 @@ export default function App() {
     if (p === "/exam-guide/apply") return "exam-apply";
     if (p === "/exam-guide/day") return "exam-day";
     if (p === "/exam-guide/results") return "exam-results";
+    if (p === "/exam-guide/faq") return "exam-faq";
     if (p === "/training") return "training-hub";
     if (p === "/training/survey") return "survey";
     if (p === "/training/difficulty") return "difficulty";
@@ -95,6 +97,7 @@ export default function App() {
     "exam-apply": "/exam-guide/apply",
     "exam-day": "/exam-guide/day",
     "exam-results": "/exam-guide/results",
+    "exam-faq": "/exam-guide/faq",
     "training-hub": "/training",
     survey: "/training/survey",
     difficulty: "/training/difficulty",
@@ -132,6 +135,7 @@ export default function App() {
       <Route path="/exam-guide/day" element={<ExamGuideDay onSectionChange={(v) => navigate(viewPathForId[v])} />} />
       <Route path="/exam-guide/apply" element={<ExamGuideDashboard initialSection={"exam-apply"} onNavigate={onNavigate} onSectionChange={(v) => navigate(viewPathForId[v])} />} />
       <Route path="/exam-guide/results" element={<ExamGuideDashboard initialSection={"exam-results"} onNavigate={onNavigate} onSectionChange={(v) => navigate(viewPathForId[v])} />} />
+      <Route path="/exam-guide/faq" element={<ExamGuideFaq onSectionChange={(v) => navigate(viewPathForId[v])} />} />
 
       <Route path="/training" element={<TrainingHub onNavigate={onNavigate} />} />
       <Route path="/training/survey" element={<BackgroundSurveySheet />} />

@@ -58,7 +58,7 @@ Parent hubs explain the purpose of their child pages. Parent routes should not s
 | --- | --- | --- |
 | Home | `HomeView` | Product overview and entry points |
 | OOM magazine | `MagazineList`, `MagazineDetail` | Static learning articles with local editorial images, summaries, examples, and practice takeaways |
-| Candidate guide | `ExamGuideHub`, `ExamGuideOverview`, `ExamGuideDashboard`, `ExamGuideDay`, `ExamGuideTabs` | Informational content with official-source links for time-sensitive rules |
+| Candidate guide | `ExamGuideHub`, `ExamGuideOverview`, `ExamGuideDashboard`, `ExamGuideDay`, `ExamGuideFaq`, `ExamGuideTabs` | Informational content, Q&A, and official-source links for time-sensitive rules |
 | Training overview | `TrainingHub` | Explains STEP 1-5 and links to each stage |
 | Survey | `BackgroundSurveySheet` | Full survey-like list, fixed recommendation view, rehearsal mode and scoring |
 | Difficulty | `DifficultyGuide` | 5-5 guidance and target-level speaking strategies |
@@ -97,6 +97,7 @@ The choice is intentional:
 | `magazine.ts` | OOM magazine article copy, learning examples, takeaways, and local editorial-image metadata |
 | `roleplays.ts` | Six-step formula, reusable phrases, core scenarios |
 | `additionalRoleplays.ts` | Additional indoor/rest, sports, and home scenarios |
+| `examFaq.ts` | Candidate-guide Q&A categories and answers |
 | `examGuideContent.ts` | Candidate-guide information, official links, source-note copy |
 
 Do not duplicate these values in view components. Add to the relevant data owner instead.

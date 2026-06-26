@@ -1,10 +1,11 @@
-export type ExamGuideSection = "exam-overview" | "exam-apply" | "exam-day" | "exam-results";
+﻿export type ExamGuideSection = "exam-overview" | "exam-apply" | "exam-day" | "exam-results" | "exam-faq";
 
 export const examGuideSections: Array<{ id: ExamGuideSection; label: string; shortLabel: string; description: string }> = [
   { id: "exam-overview", label: "OPIc 소개 · 등급", shortLabel: "소개 · 등급", description: "시험의 목적, 형식, 등급 체계와 전체 흐름" },
   { id: "exam-apply", label: "회원 · 신청 · 응시료", shortLabel: "신청 · 응시료", description: "회원가입, 접수 과정, 응시료와 지원 안내" },
   { id: "exam-day", label: "신분증 · 입실 · 진행", shortLabel: "당일 진행", description: "규정 신분증, 입실 통제, 시험 진행 프로세스" },
   { id: "exam-results", label: "성적 · 인증서 · 쿠폰", shortLabel: "성적 · 쿠폰", description: "성적 발표, 인증서, UR과 세이빙 쿠폰" },
+  { id: "exam-faq", label: "자주 묻는 질문", shortLabel: "Q&A", description: "시험장과 준비 과정에서 자주 헷갈리는 질문 모음" },
 ];
 
 export const guideSourceNote = "규정성 정보는 제공된 OPIc 공식 안내(응시료는 2025년 11월 1일 신청부터 적용) 기준으로 정리했습니다. 시험 신청 직전에는 공식 사이트의 최신 공지와 수험자 가이드를 다시 확인하세요.";

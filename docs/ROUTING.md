@@ -41,7 +41,7 @@ OOM magazine
 AI feedback / settings
 ```
 
-The candidate guide and training hub are independent top-level branches. STEP 1-5 must not be displayed as peers of the guide; they belong to the training hub.
+The candidate guide and training hub are independent top-level branches. STEP 1-5 must not be displayed as peers of the guide; they belong to the training hub. The candidate guide also includes the `exam-faq` Q&A child page.
 
 ## Header Rule
 
@@ -65,6 +65,7 @@ Home, all `exam-*` views, `magazine-list` (including article detail URLs), and `
 | `exam-apply` | Candidate guide child | `ExamGuideDashboard` | No | Membership, application, fees |
 | `exam-day` | Candidate guide child | `ExamGuideDay` | No | ID, admission cutoff, OT/test visual flow |
 | `exam-results` | Candidate guide child | `ExamGuideDashboard` | No | Results, certificate, coupons |
+| `exam-faq` | Candidate guide child | `ExamGuideFaq` | No | Frequently asked OPIc questions |
 | `training-hub` | Training parent | `TrainingHub` | Yes, 0% | Explains STEP 1-5 |
 | `survey` | Training / STEP 1 | `BackgroundSurveySheet` | Yes, 20% | Fixed recommendation and rehearsal |
 | `difficulty` | Training / STEP 2 | `DifficultyGuide` | Yes, 40% | Default 5-5 guidance |

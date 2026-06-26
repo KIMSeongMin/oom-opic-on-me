@@ -1,8 +1,8 @@
-import { FileCheck2, GraduationCap, ShieldCheck, UserRoundCheck } from "lucide-react";
+﻿import { CircleHelp, FileCheck2, GraduationCap, ShieldCheck, UserRoundCheck } from "lucide-react";
 import { examGuideSections, type ExamGuideSection } from "../../data/examGuideContent";
 import { Card } from "../ui/Card";
 
-const sectionIcons = [GraduationCap, UserRoundCheck, ShieldCheck, FileCheck2];
+const sectionIcons = [GraduationCap, UserRoundCheck, ShieldCheck, FileCheck2, CircleHelp];
 
 type ExamGuideTabsProps = {
   activeSection: ExamGuideSection;
@@ -12,7 +12,7 @@ type ExamGuideTabsProps = {
 export function ExamGuideTabs({ activeSection, onSectionChange }: ExamGuideTabsProps) {
   return (
     <Card className="p-1.5">
-      <div aria-label="OPIc 수험 가이드 하위 페이지" className="grid grid-cols-2 gap-1 lg:grid-cols-4" role="tablist">
+      <div aria-label="OPIc 수험 가이드 하위 페이지" className="grid grid-cols-2 gap-1 lg:grid-cols-5" role="tablist">
         {examGuideSections.map((section, index) => {
           const Icon = sectionIcons[index];
           const active = section.id === activeSection;

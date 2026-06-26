@@ -1,10 +1,11 @@
-export type ViewId =
+﻿export type ViewId =
   | "home"
   | "exam-guide"
   | "exam-overview"
   | "exam-apply"
   | "exam-day"
   | "exam-results"
+  | "exam-faq"
   | "training-hub"
   | "survey"
   | "difficulty"
@@ -31,6 +32,7 @@ export const viewTitles: Record<ViewId, string> = {
   "exam-apply": "OPIc 수험 가이드 · 신청 · 응시료",
   "exam-day": "OPIc 수험 가이드 · 시험 당일",
   "exam-results": "OPIc 수험 가이드 · 성적 · 인증서",
+  "exam-faq": "OPIc 수험 가이드 · 자주 묻는 질문",
   "training-hub": "OPIc 실전 훈련하기",
   survey: "STEP 1. 서베이 고정",
   difficulty: "STEP 2. 난이도 설정",

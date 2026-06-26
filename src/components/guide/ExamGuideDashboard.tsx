@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarCheck2, CheckCircle2, CircleDollarSign, Clock3, ExternalLink, FileCheck2, FileText, GraduationCap, Landmark, ListChecks, ShieldCheck, TicketCheck, UserRoundCheck } from "lucide-react";
+import { BadgeCheck, CalendarCheck2, CheckCircle2, CircleDollarSign, CircleHelp, Clock3, ExternalLink, FileCheck2, FileText, GraduationCap, Landmark, ListChecks, ShieldCheck, TicketCheck, UserRoundCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { applyStepsDetailed, dayOfExamRules, examAtAGlance, examGuideSections, examProcess, feeRows, gradeGuide, guideSourceNote, identityGroups, identityWarnings, membershipGuidance, militaryIdGuidance, officialGuideLinks, resultGuidance, savingCouponRules, type ExamGuideSection } from "../../data/examGuideContent";
@@ -13,7 +13,7 @@ type ExamGuideDashboardProps = {
   onSectionChange: (section: ExamGuideSection) => void;
 };
 
-const sectionIcons = [GraduationCap, UserRoundCheck, ShieldCheck, FileCheck2];
+const sectionIcons = [GraduationCap, UserRoundCheck, ShieldCheck, FileCheck2, CircleHelp];
 
 function OfficialLink({ children, href }: { children: ReactNode; href: string }) {
   return <a className="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-700 underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:text-indigo-300" href={href} rel="noreferrer" target="_blank">{children}<ExternalLink className="h-3.5 w-3.5" /></a>;
@@ -69,5 +69,5 @@ export function ExamGuideDashboard({ initialSection, onNavigate, onSectionChange
     return <OverviewContent onNavigate={onNavigate} />;
   };
 
-  return <div className="space-y-6"><Card className="p-1.5"><div aria-label="OPIc 수험 가이드 하위 페이지" className="grid grid-cols-2 gap-1 lg:grid-cols-4" role="tablist">{examGuideSections.map((section, index) => { const Icon = sectionIcons[index]; const active = section.id === initialSection; return <button aria-label={section.label} aria-selected={active} className={`flex min-h-12 items-center justify-center gap-2 rounded-md px-2 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sm:text-sm ${active ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"}`} key={section.id} onClick={() => onSectionChange(section.id)} role="tab" type="button"><Icon className="h-4 w-4 shrink-0" /><span className="hidden sm:inline">{section.label}</span><span className="sm:hidden">{section.shortLabel}</span></button>; })}</div></Card><motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 8 }} key={initialSection} transition={{ duration: 0.2 }}>{renderContent()}</motion.div></div>;
+  return <div className="space-y-6"><Card className="p-1.5"><div aria-label="OPIc 수험 가이드 하위 페이지" className="grid grid-cols-2 gap-1 lg:grid-cols-5" role="tablist">{examGuideSections.map((section, index) => { const Icon = sectionIcons[index]; const active = section.id === initialSection; return <button aria-label={section.label} aria-selected={active} className={`flex min-h-12 items-center justify-center gap-2 rounded-md px-2 py-2 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 sm:text-sm ${active ? "bg-indigo-600 text-white shadow-sm" : "text-zinc-500 hover:bg-zinc-100 hover:text-zinc-950 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white"}`} key={section.id} onClick={() => onSectionChange(section.id)} role="tab" type="button"><Icon className="h-4 w-4 shrink-0" /><span className="hidden sm:inline">{section.label}</span><span className="sm:hidden">{section.shortLabel}</span></button>; })}</div></Card><motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 8 }} key={initialSection} transition={{ duration: 0.2 }}>{renderContent()}</motion.div></div>;
 }

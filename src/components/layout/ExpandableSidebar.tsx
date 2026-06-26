@@ -1,4 +1,4 @@
-import {
+﻿import {
   Bot,
   BookOpenCheck,
   BookOpenText,
@@ -38,6 +38,7 @@ const guideItems: Item[] = [
   { id: "exam-apply", label: "회원 · 신청 · 응시료" },
   { id: "exam-day", label: "신분증 · 입실 · 진행" },
   { id: "exam-results", label: "성적 · 인증서 · 쿠폰" },
+  { id: "exam-faq", label: "자주 묻는 질문" },
 ];
 
 const scriptItems: Item[] = [
