@@ -69,7 +69,7 @@ npm run verify:pages
 npm run preview
 ```
 
-`npm run build`는 `dist/`에 정적 산출물을 생성합니다. `npm run verify:pages`는 빌드 결과가 개발용 `src/main.tsx`가 아니라 번들 자산을 참조하는지 확인합니다.
+`npm run build`는 Vite 산출물을 만든 뒤 sitemap에 포함된 주요 경로마다 route별 SEO HTML을 `dist/**/index.html`로 생성합니다. `npm run verify:pages`는 빌드 결과가 개발용 `src/main.tsx`가 아니라 번들 자산을 참조하는지, 주요 정적 route 파일이 존재하는지, redirect-only HTML이 남지 않았는지 확인합니다.
 
 ## GitHub Pages 배포
 
@@ -82,6 +82,8 @@ npm run preview
 개인 도메인으로 배포할 때는 Vite base(`/`)를 사용하므로, 사이트가 도메인 루트 경로에서 동작합니다. GitHub Pages의 프로젝트 하위 경로에 배포하려면 그 경로에 맞춘 별도 base 설정이 필요합니다.
 
 개인 도메인을 연결한 뒤에는 해당 도메인의 `/` 경로로 접속합니다.
+
+GitHub Pages는 SPA 하위 경로를 서버에서 rewrite하지 않습니다. 이 저장소는 빌드 후 `scripts/generate-static-routes.mjs`가 `dist/magazine/opic-2026-strategy/index.html`, `dist/exam-guide/index.html`, `dist/privacy/index.html`처럼 실제 파일을 생성해 직접 접근과 검색엔진 source 확인에서 route별 title, description, canonical, Open Graph 태그와 최소 본문을 반환하도록 합니다. 알 수 없는 경로만 `404.html`의 SPA fallback을 사용합니다.
 
 ## 내부 LLM 설정
 

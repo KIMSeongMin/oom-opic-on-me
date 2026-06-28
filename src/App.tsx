@@ -11,6 +11,7 @@ import { ExamGuideFaq } from "./components/guide/ExamGuideFaq";
 import { HomeView } from "./components/home/HomeView";
 import { AppShell } from "./components/layout/AppShell";
 import type { ViewId } from "./components/layout/Sidebar";
+import { LegalPageView } from "./components/legal/LegalPageView";
 import { PracticeView } from "./components/practice/PracticeView";
 import { RoleplayHub } from "./components/roleplay/RoleplayHub";
 import { RoleplayFormulaView } from "./components/roleplay/RoleplayFormulaView";
@@ -87,6 +88,10 @@ export default function App() {
     if (p === "/practice") return "practice";
     if (p === "/ai-settings") return "ai-settings";
     if (p === "/magazine" || p.startsWith("/magazine/")) return "magazine-list";
+    if (p === "/about") return "about";
+    if (p === "/privacy") return "privacy";
+    if (p === "/contact") return "contact";
+    if (p === "/terms") return "terms";
     return "home";
   };
 
@@ -116,6 +121,10 @@ export default function App() {
     practice: "/practice",
     "ai-settings": "/ai-settings",
     "magazine-list": "/magazine",
+    about: "/about",
+    privacy: "/privacy",
+    contact: "/contact",
+    terms: "/terms",
   };
 
   const activeView = viewIdForPath(location.pathname);
@@ -157,6 +166,10 @@ export default function App() {
       <Route path="/ai-settings" element={<AiSettingsView onChange={setSettings} onSave={saveSettings} settings={settings} />} />
       <Route path="/magazine" element={<MagazineList />} />
       <Route path="/magazine/:id" element={<MagazineDetail />} />
+      <Route path="/about" element={<LegalPageView pageId="about" />} />
+      <Route path="/privacy" element={<LegalPageView pageId="privacy" />} />
+      <Route path="/contact" element={<LegalPageView pageId="contact" />} />
+      <Route path="/terms" element={<LegalPageView pageId="terms" />} />
     </Routes>
   );
   const isStepView = ["training-hub", "survey", "difficulty", "script-hub", "script-outdoor", "script-indoor", "script-sports", "script-home", "roleplay", "roleplay-hub", "roleplay-formula", "roleplay-travel", "roleplay-indoor", "roleplay-sports", "roleplay-home", "practice"].includes(activeView);

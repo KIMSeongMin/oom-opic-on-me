@@ -2,7 +2,9 @@
 
 ## Routing Model
 
-OOM does not use React Router. `src/App.tsx` stores the active `ViewId` in React state and selects one screen component. This is intentional for GitHub Pages and static hosting.
+OOM uses `BrowserRouter` and `Routes` for clean URL matching. `src/App.tsx` derives the active `ViewId` from `location.pathname` so the shell, sidebar, training header, and next-step controls stay synchronized.
+
+GitHub Pages cannot rewrite unknown paths to the SPA shell. `scripts/generate-static-routes.mjs` therefore runs after Vite build and creates real `dist/**/index.html` files for sitemap routes. These files keep the Vite bundle and include route-specific SEO metadata plus a small static body.
 
 `ViewId` and the page-title map are defined in `src/components/layout/Sidebar.tsx`. When adding a view, update all of the following together:
 
@@ -38,6 +40,11 @@ OPIc training hub
 │  └─ home / residence
 └─ STEP 5. practice
 OOM magazine
+Footer legal pages
+├─ about
+├─ privacy
+├─ terms
+└─ contact
 AI feedback / settings
 ```
 
@@ -53,7 +60,7 @@ The candidate guide and training hub are independent top-level branches. STEP 1-
 - `roleplay`, `roleplay-hub`, `roleplay-formula`, and `roleplay-*`
 - `practice`
 
-Home, all `exam-*` views, `magazine-list` (including article detail URLs), and `ai-settings` do not render the sticky training header. Their mobile experience uses compact floating controls instead.
+Home, all `exam-*` views, `magazine-list` (including article detail URLs), footer legal pages, and `ai-settings` do not render the sticky training header. Their mobile experience uses compact floating controls instead.
 
 ## Route Table
 
@@ -83,6 +90,10 @@ Home, all `exam-*` views, `magazine-list` (including article detail URLs), and `
 | `practice` | Training / STEP 5 | `PracticeView` | Yes, 100% | Random prompt, timer, recording, feedback |
 | `magazine-list` | Top-level magazine | `MagazineList` / `MagazineDetail` | No | `/magazine` lists static articles; `/magazine/:id` renders the selected article |
 | `ai-settings` | Top-level utility | `AiSettingsView` | No | LLM runtime configuration |
+| `about` | Footer legal page | `LegalPageView` | No | `/about` introduces OOM as a study tool |
+| `privacy` | Footer legal page | `LegalPageView` | No | `/privacy` explains privacy, cookies, Google ads, and contact |
+| `contact` | Footer legal page | `LegalPageView` | No | `/contact` lists the inquiry email |
+| `terms` | Footer legal page | `LegalPageView` | No | `/terms` explains study-use terms and non-affiliation |
 | `roleplay` | Compatibility route only | `RoleplayFormulaView` | Yes, 80% | Do not add new navigation links to this alias |
 
 ## Next-Step Contract

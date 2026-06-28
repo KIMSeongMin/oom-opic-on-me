@@ -23,7 +23,11 @@
   | "roleplay-home"
   | "practice"
   | "ai-settings"
-  | "magazine-list";
+  | "magazine-list"
+  | "about"
+  | "privacy"
+  | "contact"
+  | "terms";
 
 export const viewTitles: Record<ViewId, string> = {
   home: "홈 / 전략 개요",
@@ -51,4 +55,8 @@ export const viewTitles: Record<ViewId, string> = {
   practice: "STEP 5. 실전 연습",
   "ai-settings": "AI 피드백 / 설정",
   "magazine-list": "오픽 매거진",
+  about: "소개",
+  privacy: "개인정보처리방침",
+  contact: "문의",
+  terms: "이용약관",
 };

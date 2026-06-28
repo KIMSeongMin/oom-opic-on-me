@@ -15,10 +15,25 @@ if (assetPaths.length === 0) {
 }
 
 const requiredRootFiles = ["CNAME", "robots.txt", "sitemap.xml"];
+const requiredRouteFiles = [
+  "magazine/opic-2026-strategy/index.html",
+  "exam-guide/index.html",
+  "privacy/index.html",
+  "about/index.html",
+  "contact/index.html",
+  "terms/index.html",
+];
 const pathsToVerify = [
   ...assetPaths.map((assetPath) => assetPath.replace(/^(?:\.\/|\/)/, "")),
   ...requiredRootFiles,
+  ...requiredRouteFiles,
 ];
 
 await Promise.all(pathsToVerify.map((path) => access(join(distDirectory, path))));
-console.log(`Verified GitHub Pages artifact with ${assetPaths.length} bundled asset reference(s) and ${requiredRootFiles.length} root static file(s).`);
+const routeHtmlFiles = await Promise.all(requiredRouteFiles.map((path) => readFile(join(distDirectory, path), "utf8")));
+for (const routeHtml of routeHtmlFiles) {
+  if (routeHtml.includes("http-equiv=\"refresh\"") || routeHtml.includes("location.replace('/?p='")) {
+    throw new Error("A generated route HTML file still contains the SPA redirect fallback.");
+  }
+}
+console.log(`Verified GitHub Pages artifact with ${assetPaths.length} bundled asset reference(s), ${requiredRootFiles.length} root static file(s), and ${requiredRouteFiles.length} static route file(s).`);

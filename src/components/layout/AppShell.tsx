@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { ArrowRight, Menu, Moon, Sun } from "lucide-react";
 import { Button } from "../ui/Button";
 import { type ViewId, viewTitles } from "./Sidebar";
@@ -48,8 +48,19 @@ export function AppShell({ activeView, children, darkMode, mobileOpen, nextStep,
       <main className="flex min-h-screen min-w-0 flex-1 flex-col lg:h-screen lg:min-h-0 lg:overflow-y-auto">
         {showTrainingHeader ? <header className="sticky top-0 z-20 border-b border-zinc-200 bg-zinc-100/90 px-4 py-3 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90 sm:px-6 lg:px-9"><div className="mx-auto flex max-w-7xl items-center gap-3"><Button aria-label="메뉴 열기" className="lg:hidden" onClick={onToggleMobileMenu} size="icon" variant="ghost"><Menu className="h-5 w-5" /></Button><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold text-zinc-900 dark:text-white">{viewTitles[activeView]}</p><div className="mt-2 h-1 overflow-hidden rounded bg-zinc-200 dark:bg-zinc-800"><div className="h-full rounded bg-indigo-600 transition-all duration-500" style={{ width: `${progress}%` }} /></div></div><span className="hidden text-xs font-medium text-zinc-500 lg:block">훈련 진행 {progress}%</span>{nextStep ? <><Button aria-label={`다음 단계: ${nextStep.label}`} className="sm:hidden" onClick={nextStep.onClick} size="icon" variant="secondary"><ArrowRight className="h-4 w-4" /></Button><Button aria-label={`다음 단계: ${nextStep.label}`} className="hidden sm:inline-flex" onClick={nextStep.onClick} size="sm" variant="secondary"><span className="hidden lg:inline">다음:</span>{nextStep.label}<ArrowRight className="h-3.5 w-3.5" /></Button></> : null}<Button aria-label={themeLabel} onClick={onToggleDarkMode} size="icon" variant="ghost">{darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}</Button></div></header> : mobileControls}
         <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-9 lg:py-9">{children}</div>
-        <footer className="border-t border-zinc-200 bg-zinc-50 px-4 py-4 text-center text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 sm:px-6 lg:px-9">© 2026 오픽온미</footer>
+        <footer className="border-t border-zinc-200 bg-zinc-50 px-4 py-5 text-xs text-zinc-500 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400 sm:px-6 lg:px-9">
+          <div className="mx-auto flex max-w-7xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p>© 2026 오픽온미</p>
+            <nav aria-label="서비스 정보" className="flex flex-wrap gap-x-4 gap-y-2">
+              <a className="rounded-sm hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-white" href="/about/">소개</a>
+              <a className="rounded-sm hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-white" href="/privacy/">개인정보처리방침</a>
+              <a className="rounded-sm hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-white" href="/terms/">이용약관</a>
+              <a className="rounded-sm hover:text-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 dark:hover:text-white" href="/contact/">문의</a>
+            </nav>
+          </div>
+        </footer>
       </main>
     </div>
   );
 }
+
